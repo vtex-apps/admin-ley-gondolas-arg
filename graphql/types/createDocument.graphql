@@ -1,5 +1,5 @@
 input BodyCreateDocumentMasterData {
-  categorie: String
+  categorieLaw: String
   categorieCatalog: String
   bestLowerProduct: String
 }

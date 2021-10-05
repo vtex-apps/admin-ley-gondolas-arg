@@ -12,7 +12,7 @@
   "admin/admin.app.ley-gondolas-arg.filterIsNot": "não igual",
   "admin/admin.app.ley-gondolas-arg.filterContains": "contém",
   "admin/admin.app.ley-gondolas-arg.filterApply": "Aplique",
-  "admin/admin.app.ley-gondolas-arg.categoriesTableCategorie": "Categoria da lei",
+  "admin/admin.app.ley-gondolas-arg.categoriesTableCategorieLaw": "Categoria da lei",
   "admin/admin.app.ley-gondolas-arg.categoriesTableCategorieCatalog": "Categoria de catálogo",
   "admin/admin.app.ley-gondolas-arg.categoriesTableBestLowerProduct": "Melhor Produto Inferior"
 }

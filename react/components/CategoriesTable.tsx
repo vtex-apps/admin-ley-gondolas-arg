@@ -16,8 +16,8 @@ export default function CategoriesTable({
 
   const columns = [
     {
-      id: 'categorie',
-      title: intl.formatMessage(titlesIntl.categoriesTableCategorie),
+      id: 'categorieLaw',
+      title: intl.formatMessage(titlesIntl.categoriesTableCategorieLaw),
     },
     {
       id: 'categorieCatalog',
@@ -72,7 +72,7 @@ export default function CategoriesTable({
       const { subject, verb, object } = st
 
       switch (subject) {
-        case 'categorie':
+        case 'categorieLaw':
           if (verb === 'contains') {
             newData = newData.filter((item: any) => {
               return item[subject].includes(object)
@@ -94,7 +94,6 @@ export default function CategoriesTable({
   }
 
   const filterClear = intl.formatMessage(titlesIntl.filterClear)
-
   const filterAny = intl.formatMessage(titlesIntl.filterAny)
   const filterIs = intl.formatMessage(titlesIntl.filterIs)
   const filterIsNot = intl.formatMessage(titlesIntl.filterIsNot)
@@ -102,7 +101,7 @@ export default function CategoriesTable({
   const filterApply = intl.formatMessage(titlesIntl.filterApply)
 
   const filters = {
-    alwaysVisibleFilters: ['categorie'],
+    alwaysVisibleFilters: ['categorieLaw'],
     statements: filterStatements,
     onChangeStatements: handleFiltersChange,
     clearAllFiltersButtonLabel: filterClear,
@@ -110,7 +109,7 @@ export default function CategoriesTable({
     submitFilterLabel: filterApply,
     options: {
       categorie: {
-        label: intl.formatMessage(titlesIntl.categoriesTableCategorie),
+        label: intl.formatMessage(titlesIntl.categoriesTableCategorieLaw),
         ...simpleInputVerbsAndLabel(),
       },
     },

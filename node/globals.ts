@@ -63,14 +63,14 @@ declare global {
   }
 
   interface SaveDataInMasterDataBody {
-    categorie: string
+    categorieLaw: string
     categorieCatalog: string
     bestLowerProduct: string
   }
 
   interface DocumentOfCategorie {
     id: string
-    categorie: string
+    categorieLaw: string
     categorieCatalog: string
     bestLowerProduct: string
   }

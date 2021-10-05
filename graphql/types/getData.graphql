@@ -1,6 +1,6 @@
 type DataGetDataResponse {
   id: String
-  categorie: String
+  categorieLaw: String
   categorieCatalog: String
   bestLowerProduct: String
 }

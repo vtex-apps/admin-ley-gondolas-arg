@@ -14,7 +14,7 @@ export const titlesIntl = defineMessages({
   filterIsNot: { id: `${prefix}filterIsNot` },
   filterContains: { id: `${prefix}filterContains` },
   filterApply: { id: `${prefix}filterApply` },
-  categoriesTableCategorie: { id: `${prefix}categoriesTableCategorie` },
+  categoriesTableCategorieLaw: { id: `${prefix}categoriesTableCategorieLaw` },
   categoriesTableCategorieCatalog: {
     id: `${prefix}categoriesTableCategorieCatalog`,
   },

@@ -3,7 +3,7 @@ query getData {
     status
     data {
       id
-      categorie
+      categorieLaw
       categorieCatalog
       bestLowerProduct
     }

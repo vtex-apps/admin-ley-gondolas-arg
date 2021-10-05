@@ -1,5 +1,5 @@
 input BodyUpdateDocumentMasterData {
-  categorie: String
+  categorieLaw: String
   categorieCatalog: String
   bestLowerProduct: String
 }
