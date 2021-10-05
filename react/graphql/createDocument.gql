@@ -1,0 +1,5 @@
+mutation createDocument($body: BodyCreateDocumentMasterData) {
+  createDocument(documentId: $documentId, body: $body) {
+    status
+  }
+}

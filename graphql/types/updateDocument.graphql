@@ -1,0 +1,9 @@
+input BodyUpdateDocumentMasterData {
+  categorie: String
+  categorieCatalog: String
+  bestLowerProduct: String
+}
+
+type UpdateDocumentResponse {
+  status: Int
+}

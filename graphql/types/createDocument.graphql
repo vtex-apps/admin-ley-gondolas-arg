@@ -1,0 +1,9 @@
+input BodyCreateDocumentMasterData {
+  categorie: String
+  categorieCatalog: String
+  bestLowerProduct: String
+}
+
+type CreateDocumentResponse {
+  status: Int
+}

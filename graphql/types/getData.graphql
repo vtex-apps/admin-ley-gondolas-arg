@@ -1,0 +1,11 @@
+type DataGetDataResponse {
+  id: String
+  categorie: String
+  categorieCatalog: String
+  bestLowerProduct: String
+}
+
+type GetDataResponse {
+  status: Int
+  data: [DataGetDataResponse]
+}

@@ -1,0 +1,12 @@
+type Query {
+  getData: GetDataResponse
+}
+
+type Mutation {
+  createDocument(body: BodyCreateDocumentMasterData): CreateDocumentResponse
+
+  updateDocument(
+    documentId: String
+    body: BodyUpdateDocumentMasterData
+  ): UpdateDocumentResponse
+}
