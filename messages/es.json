@@ -1,9 +1,18 @@
 {
-  "admin-example.navigation.label-group": "Admins de ejemplo",
-  "admin-example.navigation.label-table": "Ejemplo de tabela",
-  "admin-example.navigation.search.kws": "teste, mock, fake",
-  "admin-example.navigation.details.search.kws": "detalhe, mock, test, oi",
-  "admin-example.navigation.table.search.kws": "tabela, mock, test, tchau",
-  "admin-example.hello-world": "Admin de ejemplo",
-  "admin-example.details": "Página de detalles"
+  "admin/admin.app.navigation.title": "Ley de Gondolas",
+  "admin/admin.app.navigation.search.kws": "ley, gondolas, arg, argentina",
+  "admin/admin.app.ley-gondolas-arg.pageTitle": "Ley de Gondolas",
+  "admin/admin.app.ley-gondolas-arg.textOf": "de",
+  "admin/admin.app.ley-gondolas-arg.textShowRows": "Mostrar filas",
+  "admin/admin.app.ley-gondolas-arg.filterClear": "Limpiar Filtros",
+  "admin/admin.app.ley-gondolas-arg.filterAll": "Todos",
+  "admin/admin.app.ley-gondolas-arg.filterNone": "Ninguno",
+  "admin/admin.app.ley-gondolas-arg.filterAny": "Cualquiera",
+  "admin/admin.app.ley-gondolas-arg.filterIs": "igual",
+  "admin/admin.app.ley-gondolas-arg.filterIsNot": "no igual",
+  "admin/admin.app.ley-gondolas-arg.filterContains": "contiene",
+  "admin/admin.app.ley-gondolas-arg.filterApply": "Aplicar",
+  "admin/admin.app.ley-gondolas-arg.categoriesTableCategorie": "Categoria Ley",
+  "admin/admin.app.ley-gondolas-arg.categoriesTableCategorieCatalog": "Categoria Catalogo",
+  "admin/admin.app.ley-gondolas-arg.categoriesTableBestLowerProduct": "Mejor Menor Producto"
 }
