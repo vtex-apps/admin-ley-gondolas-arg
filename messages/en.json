@@ -12,7 +12,7 @@
   "admin/admin.app.ley-gondolas-arg.filterIsNot": "is not",
   "admin/admin.app.ley-gondolas-arg.filterContains": "contains",
   "admin/admin.app.ley-gondolas-arg.filterApply": "Apply",
-  "admin/admin.app.ley-gondolas-arg.categoriesTableCategorieLaw": "Law Categorie",
-  "admin/admin.app.ley-gondolas-arg.categoriesTableCategorieCatalog": "Catalog Categorie",
+  "admin/admin.app.ley-gondolas-arg.categoriesTableCategorieLaw": "Law category",
+  "admin/admin.app.ley-gondolas-arg.categoriesTableCategorieCatalog": "Catalog category",
   "admin/admin.app.ley-gondolas-arg.categoriesTableBestLowerProduct": "Best Lower Product"
 }

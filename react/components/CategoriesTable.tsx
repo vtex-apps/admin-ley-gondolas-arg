@@ -1,18 +1,28 @@
 /* eslint-disable @typescript-eslint/no-use-before-define */
 /* eslint-disable react/jsx-handler-names */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { EXPERIMENTAL_Table as Table, Input } from 'vtex.styleguide'
+import {
+  EXPERIMENTAL_Table as Table,
+  Input,
+  Button,
+  Modal,
+  Tag,
+} from 'vtex.styleguide'
 import useTableMeasures from '@vtex/styleguide/lib/EXPERIMENTAL_Table/hooks/useTableMeasures'
 import React, { useState, useEffect, useCallback } from 'react'
 import { useIntl } from 'react-intl'
 
 import { titlesIntl } from '../utils/intl'
+import CategoriesTree from './CategorieTree'
 
 export default function CategoriesTable({
   categoriesList,
 }: CategoriesTableProps) {
   const intl = useIntl()
-  const [items /* , setItems */] = useState(categoriesList)
+  const [items, setItems] = useState<CategoriesRow[]>(categoriesList)
+  const [isProductModalOpen, setIsProductModalOpen] = useState(false)
+  const [nameCategoryClick, setNameCategoryClick] = useState('')
+  const [rowCategoryClick, setRowCategoryClick] = useState(-1)
 
   const columns = [
     {
@@ -22,12 +32,32 @@ export default function CategoriesTable({
     {
       id: 'categorieCatalog',
       title: intl.formatMessage(titlesIntl.categoriesTableCategorieCatalog),
+      cellRenderer: ({ data }: any) => {
+        return (
+          <div>
+            {data.name && <Tag bgColor="#F71963">{data.name}</Tag>}
+            <Button
+              variation="secondary"
+              size="small"
+              onClick={() => handleModalCategorieCatalog(data)}
+            >
+              {`Elegir Categoria`}
+            </Button>
+          </div>
+        )
+      },
     },
     {
       id: 'bestLowerProduct',
       title: intl.formatMessage(titlesIntl.categoriesTableBestLowerProduct),
     },
   ]
+
+  const handleModalCategorieCatalog = (categorieCatalog: any) => {
+    setRowCategoryClick(categorieCatalog.idRow)
+    setNameCategoryClick(categorieCatalog.name)
+    setIsProductModalOpen(!isProductModalOpen)
+  }
 
   const [filteredItems, setFilteredItems] = useState(items)
   const [filterStatements, setFilterStatements] = useState([])
@@ -108,7 +138,7 @@ export default function CategoriesTable({
     collapseLeft: true,
     submitFilterLabel: filterApply,
     options: {
-      categorie: {
+      categorieLaw: {
         label: intl.formatMessage(titlesIntl.categoriesTableCategorieLaw),
         ...simpleInputVerbsAndLabel(),
       },
@@ -169,12 +199,52 @@ export default function CategoriesTable({
     }
   }
 
+  const density = {
+    label: 'Line density',
+    compactLabel: 'Compact',
+    regularLabel: 'Regular',
+    comfortableLabel: 'Comfortable',
+  }
+
+  const save = {
+    label: 'Guardar',
+    onClick: () => {
+      console.info('Guardar')
+      console.info('items', items)
+    },
+  }
+
+  useEffect(() => {
+    const filterBar = document.getElementById('vtex-table-v2__filter-bar')
+
+    filterBar?.classList.remove('mb5')
+  }, [])
+
   return (
     <div>
       <Table measures={measures} columns={columns} items={slicedItems}>
-        <Table.FilterBar {...filters} />
         <Table.Pagination {...pagination} />
+        <Table.Toolbar>
+          <Table.FilterBar {...filters} />
+          <Table.Toolbar.ButtonGroup>
+            <Table.Toolbar.ButtonGroup.Density {...density} />
+            <Table.Toolbar.ButtonGroup.NewLine {...save} />
+          </Table.Toolbar.ButtonGroup>
+        </Table.Toolbar>
       </Table>
+      <Modal
+        centered
+        isOpen={isProductModalOpen}
+        onClose={() => handleModalCategorieCatalog({ idRow: -1, name: '' })}
+      >
+        <CategoriesTree
+          idRow={rowCategoryClick}
+          nameCategory={nameCategoryClick}
+          items={items}
+          setItems={setItems}
+          closeModal={handleModalCategorieCatalog}
+        />
+      </Modal>
     </div>
   )
 }

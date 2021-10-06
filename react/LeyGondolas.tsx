@@ -32,7 +32,10 @@ export default function LeyGondolas() {
         id: index,
         idDocument: documentFinded?.id || '',
         categorieLaw: lawCategorie,
-        categorieCatalog: documentFinded?.categorieCatalog || '',
+        categorieCatalog: {
+          idRow: index,
+          name: documentFinded?.categorieCatalog || '',
+        },
         bestLowerProduct: documentFinded?.bestLowerProduct || '',
       }
     }
