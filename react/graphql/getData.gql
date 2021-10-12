@@ -5,6 +5,7 @@ query getData {
       id
       categorieLaw
       categorieCatalog
+      idCategory
       bestLowerProduct
     }
   }

@@ -6,8 +6,16 @@ import { Checkbox } from 'vtex.styleguide'
 
 import arrow from '../../assets/categoryTree/arrowCategoryTree.svg'
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const Expandable = ({ title, content, checked, setChecked, open }: any) => {
+const Expandable = ({
+  id,
+  title,
+  content,
+  checked,
+  setChecked,
+  setCheckedId,
+  open,
+}: // eslint-disable-next-line @typescript-eslint/no-explicit-any
+any) => {
   const { getCollapseProps, getToggleProps } = useCollapse({
     defaultExpanded: open,
   })
@@ -36,6 +44,7 @@ const Expandable = ({ title, content, checked, setChecked, open }: any) => {
             checked={checked === title}
             onChange={() => {
               setChecked(title)
+              setCheckedId(parseInt(id, 0))
             }}
           />
         </div>

@@ -19,6 +19,8 @@ export default function CategoriesTree({
 }: CategoriesTreeProps) {
   const intl = useIntl()
   const [selectedCategory, setSelectedCategory] = useState('')
+  const [selectedIdCategory, setSelectedIdCategory] = useState(-1)
+
   const responseFromGetCategoryTree = useQuery(getCategoryTree, {
     ssr: false,
   })
@@ -30,15 +32,16 @@ export default function CategoriesTree({
     const tempItems: CategoriesRow[] = items
 
     tempItems[idRow].categorieCatalog.name = selectedCategory
+    tempItems[idRow].categorieCatalog.id = selectedIdCategory
     setItems(tempItems)
-    closeModal({ idRow: -1, name: '' })
+    closeModal({ id: -1, idRow: -1, name: '' })
   }
 
   return (
     <Modal
       centered
       isOpen
-      onClose={() => closeModal({ idRow: -1, name: '' })}
+      onClose={() => closeModal({ id: -1, idRow: -1, name: '' })}
       bottomBar={
         <div className="nowrap">
           {nameCategory && (
@@ -51,7 +54,7 @@ export default function CategoriesTree({
           <span className="mr4">
             <Button
               variation="tertiary"
-              onClick={() => closeModal({ idRow: -1, name: '' })}
+              onClick={() => closeModal({ id: -1, idRow: -1, name: '' })}
             >
               {`${intl.formatMessage(titlesIntl.cancel)}`}
             </Button>
@@ -75,6 +78,7 @@ export default function CategoriesTree({
             category={dataFromGetCategoryTree}
             selectedCategory={nameCategory}
             setSelectedCategory={setSelectedCategory}
+            setSelectedIdCategory={setSelectedIdCategory}
           />
         )}
         {!dataFromGetCategoryTree && <LoadingSpinner />}

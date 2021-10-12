@@ -6,6 +6,7 @@ import type { ReactNode, SetStateAction, Dispatch } from 'react'
 declare global {
   export interface CategorieCatalog {
     idRow: number
+    id: number
     name: string
   }
   export interface CategoriesRow {
@@ -24,6 +25,7 @@ declare global {
     id: string
     categorieLaw: string
     categorieCatalog: string
+    idCategory: number
     bestLowerProduct: string
   }
 
@@ -32,7 +34,7 @@ declare global {
     nameCategory: string
     items: CategoriesRow[]
     setItems: (items: CategoriesRow[]) => void
-    closeModal: ({ idRow, name }: CategorieCatalog) => void
+    closeModal: ({ id, idRow, name }: CategorieCatalog) => void
   }
 
   export interface CategoryChildenListProps {
@@ -46,5 +48,6 @@ declare global {
     category: CategoryChildenListProps[]
     selectedCategory: string
     setSelectedCategory: (category: string) => void
+    setSelectedIdCategory: (id: number) => void
   }
 }

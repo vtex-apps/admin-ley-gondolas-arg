@@ -8,6 +8,7 @@ export default function RecursiveChildenList({
   category,
   selectedCategory,
   setSelectedCategory,
+  setSelectedIdCategory,
 }: RecursiveChildenListProps) {
   const [checked, setChecked] = useState<string>(selectedCategory)
 
@@ -27,9 +28,11 @@ export default function RecursiveChildenList({
     return categoryRecursive.map((categoryOfList: CategoryChildenListProps) => (
       <Expandable
         key={`${categoryOfList.id}`}
+        id={`${categoryOfList.id}`}
         title={categoryOfList.name}
         checked={checked}
         setChecked={setChecked}
+        setCheckedId={setSelectedIdCategory}
         open={doCheckOpen(categoryOfList)}
         content={
           categoryOfList.children.length > 0 &&

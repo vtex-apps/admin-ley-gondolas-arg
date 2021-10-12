@@ -34,6 +34,7 @@ export default function LeyGondolas() {
         categorieLaw: lawCategorie,
         categorieCatalog: {
           idRow: index,
+          id: documentFinded?.idCategory || -1,
           name: documentFinded?.categorieCatalog || '',
         },
         bestLowerProduct: documentFinded?.bestLowerProduct || '',
