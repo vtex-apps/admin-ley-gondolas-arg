@@ -1,11 +1,14 @@
 /* eslint-disable @typescript-eslint/prefer-optional-chain */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React from 'react'
-import { Button } from 'vtex.styleguide'
+import React, { useState } from 'react'
+import { Button, Modal, Tag } from 'vtex.styleguide'
 import { useQuery } from 'react-apollo'
+import { useIntl } from 'react-intl'
 
+import { titlesIntl } from '../utils/intl'
 import getCategoryTree from '../graphql/getCategoryTree.gql'
 import RecurviseChildenList from './RecurviseChildenList'
+import LoadingSpinner from './LoadingSpinner'
 
 export default function CategoriesTree({
   idRow,
@@ -14,52 +17,68 @@ export default function CategoriesTree({
   setItems,
   closeModal,
 }: CategoriesTreeProps) {
+  const intl = useIntl()
+  const [selectedCategory, setSelectedCategory] = useState('')
   const responseFromGetCategoryTree = useQuery(getCategoryTree, {
     ssr: false,
   })
 
-  const statusFromGetCategoryTree =
-    responseFromGetCategoryTree.data?.getCategoryTree?.status
-
   const dataFromGetCategoryTree: CategoryChildenListProps[] =
     responseFromGetCategoryTree.data?.getCategoryTree?.data
-
-  console.info('statusFromGetCategoryTree', statusFromGetCategoryTree)
-  console.info('dataFromGetCategoryTree', dataFromGetCategoryTree)
 
   const handleChangeCategory = () => {
     const tempItems: CategoriesRow[] = items
 
-    tempItems[idRow].categorieCatalog.name = 'Test'
+    tempItems[idRow].categorieCatalog.name = selectedCategory
     setItems(tempItems)
     closeModal({ idRow: -1, name: '' })
   }
 
-  /*
-  const createNodes = (childen: any) => {
-    childen.map((data: any) => (
-      <li key={data.id}>
-        <p>{data.name}</p>
-      </li>
-    ))
-  }
-*/
-
   return (
-    <div>
-      <div>{nameCategory && `Categoria Actual: ${nameCategory}`}</div>
+    <Modal
+      centered
+      isOpen
+      onClose={() => closeModal({ idRow: -1, name: '' })}
+      bottomBar={
+        <div className="nowrap">
+          {nameCategory && (
+            <span className="mr4">
+              <Tag bgColor="#F71963">{`${intl.formatMessage(
+                titlesIntl.currentCategory
+              )}: ${nameCategory}`}</Tag>
+            </span>
+          )}
+          <span className="mr4">
+            <Button
+              variation="tertiary"
+              onClick={() => closeModal({ idRow: -1, name: '' })}
+            >
+              {`${intl.formatMessage(titlesIntl.cancel)}`}
+            </Button>
+          </span>
+          <span>
+            <Button
+              variation="primary"
+              size="small"
+              onClick={() => handleChangeCategory()}
+            >
+              {`${intl.formatMessage(titlesIntl.saveSelectedCategory)}`}
+            </Button>
+          </span>
+        </div>
+      }
+    >
       <div>
-        <Button
-          variation="secondary"
-          size="small"
-          onClick={() => handleChangeCategory()}
-        >
-          {`Guardar Categoria Catalogo`}
-        </Button>
+        <div />
+        {dataFromGetCategoryTree && (
+          <RecurviseChildenList
+            category={dataFromGetCategoryTree}
+            selectedCategory={nameCategory}
+            setSelectedCategory={setSelectedCategory}
+          />
+        )}
+        {!dataFromGetCategoryTree && <LoadingSpinner />}
       </div>
-      {dataFromGetCategoryTree && (
-        <RecurviseChildenList category={dataFromGetCategoryTree} />
-      )}
-    </div>
+    </Modal>
   )
 }

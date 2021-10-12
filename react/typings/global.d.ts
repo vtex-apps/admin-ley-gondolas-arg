@@ -44,5 +44,7 @@ declare global {
 
   export interface RecursiveChildenListProps {
     category: CategoryChildenListProps[]
+    selectedCategory: string
+    setSelectedCategory: (category: string) => void
   }
 }

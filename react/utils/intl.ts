@@ -21,4 +21,19 @@ export const titlesIntl = defineMessages({
   categoriesTableBestLowerProduct: {
     id: `${prefix}categoriesTableBestLowerProduct`,
   },
+  selectCategory: {
+    id: `${prefix}selectCategory`,
+  },
+  changeCategory: {
+    id: `${prefix}changeCategory`,
+  },
+  currentCategory: {
+    id: `${prefix}currentCategory`,
+  },
+  cancel: {
+    id: `${prefix}cancel`,
+  },
+  saveSelectedCategory: {
+    id: `${prefix}saveSelectedCategory`,
+  },
 })

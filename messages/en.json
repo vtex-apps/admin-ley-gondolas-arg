@@ -14,5 +14,10 @@
   "admin/admin.app.ley-gondolas-arg.filterApply": "Apply",
   "admin/admin.app.ley-gondolas-arg.categoriesTableCategorieLaw": "Law category",
   "admin/admin.app.ley-gondolas-arg.categoriesTableCategorieCatalog": "Catalog category",
-  "admin/admin.app.ley-gondolas-arg.categoriesTableBestLowerProduct": "Best Lower Product"
+  "admin/admin.app.ley-gondolas-arg.categoriesTableBestLowerProduct": "Best Lower Product",
+  "admin/admin.app.ley-gondolas-arg.selectCategory": "Select a Category",
+  "admin/admin.app.ley-gondolas-arg.changeCategory": "Change the Category",
+  "admin/admin.app.ley-gondolas-arg.currentCategory": "Current Category",
+  "admin/admin.app.ley-gondolas-arg.cancel": "Cancel",
+  "admin/admin.app.ley-gondolas-arg.saveSelectedCategory": "Save Selected Category"
 }

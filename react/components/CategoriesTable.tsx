@@ -5,7 +5,6 @@ import {
   EXPERIMENTAL_Table as Table,
   Input,
   Button,
-  Modal,
   Tag,
 } from 'vtex.styleguide'
 import useTableMeasures from '@vtex/styleguide/lib/EXPERIMENTAL_Table/hooks/useTableMeasures'
@@ -35,14 +34,19 @@ export default function CategoriesTable({
       cellRenderer: ({ data }: any) => {
         return (
           <div>
-            {data.name && <Tag bgColor="#F71963">{data.name}</Tag>}
-            <Button
-              variation="secondary"
-              size="small"
-              onClick={() => handleModalCategorieCatalog(data)}
-            >
-              {`Elegir Categoria`}
-            </Button>
+            <div>{data.name && <Tag bgColor="#F71963">{data.name}</Tag>}</div>
+            <div className="mt1">
+              <Button
+                variation="secondary"
+                size="small"
+                onClick={() => handleModalCategorieCatalog(data)}
+              >
+                {!data.name &&
+                  `${intl.formatMessage(titlesIntl.selectCategory)}`}
+                {data.name &&
+                  `${intl.formatMessage(titlesIntl.changeCategory)}`}
+              </Button>
+            </div>
           </div>
         )
       },
@@ -232,11 +236,7 @@ export default function CategoriesTable({
           </Table.Toolbar.ButtonGroup>
         </Table.Toolbar>
       </Table>
-      <Modal
-        centered
-        isOpen={isProductModalOpen}
-        onClose={() => handleModalCategorieCatalog({ idRow: -1, name: '' })}
-      >
+      {isProductModalOpen && (
         <CategoriesTree
           idRow={rowCategoryClick}
           nameCategory={nameCategoryClick}
@@ -244,7 +244,7 @@ export default function CategoriesTable({
           setItems={setItems}
           closeModal={handleModalCategorieCatalog}
         />
-      </Modal>
+      )}
     </div>
   )
 }
