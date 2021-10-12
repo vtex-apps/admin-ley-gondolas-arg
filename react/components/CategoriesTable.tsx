@@ -13,16 +13,20 @@ import { useIntl } from 'react-intl'
 
 import { titlesIntl } from '../utils/intl'
 import CategoriesTree from './CategorieTree'
+import ProductTable from './ProductTable'
 
 export default function CategoriesTable({
   categoriesList,
 }: CategoriesTableProps) {
   const intl = useIntl()
   const [items, setItems] = useState<CategoriesRow[]>(categoriesList)
-  const [isProductModalOpen, setIsProductModalOpen] = useState(false)
+  const [isCategoryModalOpen, setIsCategoryModalOpen] = useState(false)
   const [nameCategoryClick, setNameCategoryClick] = useState('')
   const [rowCategoryClick, setRowCategoryClick] = useState(-1)
-
+  const [isProductModalOpen, setIsProductModalOpen] = useState(false)
+  const [nameProductClick, setNameProductClick] = useState('')
+  const [idProductClick, setIdProductClick] = useState('')
+  const [rowProductClick, setRowProductClick] = useState(-1)
   const columns = [
     {
       id: 'categorieLaw',
@@ -54,12 +58,36 @@ export default function CategoriesTable({
     {
       id: 'bestLowerProduct',
       title: intl.formatMessage(titlesIntl.categoriesTableBestLowerProduct),
+      cellRenderer: ({ data }: any) => {
+        return (
+          <div>
+            <div>{data.name && <Tag bgColor="#F71963">{data.name}</Tag>}</div>
+            <div className="mt1">
+              <Button
+                variation="secondary"
+                size="small"
+                onClick={() => handleModalProducts(data)}
+              >
+                {!data.name && `Selecionar Producto Menor Precio x Unidad`}
+                {data.name && `Cambiar Producto Menor Precio x Unidad`}
+              </Button>
+            </div>
+          </div>
+        )
+      },
     },
   ]
 
   const handleModalCategorieCatalog = (categorieCatalog: any) => {
     setRowCategoryClick(categorieCatalog.idRow)
     setNameCategoryClick(categorieCatalog.name)
+    setIsCategoryModalOpen(!isCategoryModalOpen)
+  }
+
+  const handleModalProducts = (product: any) => {
+    setRowProductClick(product.idRow)
+    setIdProductClick(product.id)
+    setNameProductClick(product.name)
     setIsProductModalOpen(!isProductModalOpen)
   }
 
@@ -236,13 +264,23 @@ export default function CategoriesTable({
           </Table.Toolbar.ButtonGroup>
         </Table.Toolbar>
       </Table>
-      {isProductModalOpen && (
+      {isCategoryModalOpen && (
         <CategoriesTree
           idRow={rowCategoryClick}
           nameCategory={nameCategoryClick}
           items={items}
           setItems={setItems}
           closeModal={handleModalCategorieCatalog}
+        />
+      )}
+      {isProductModalOpen && (
+        <ProductTable
+          idRow={rowProductClick}
+          nameProduct={nameProductClick}
+          idProduct={idProductClick}
+          items={items}
+          setItems={setItems}
+          closeModal={handleModalProducts}
         />
       )}
     </div>

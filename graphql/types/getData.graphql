@@ -3,7 +3,8 @@ type DataGetDataResponse {
   categorieLaw: String
   categorieCatalog: String
   idCategory: Int
-  bestLowerProduct: String
+  nameBestLowerProduct: String
+  idBestLowerProduct: String
 }
 
 type GetDataResponse {

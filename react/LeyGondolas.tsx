@@ -37,7 +37,11 @@ export default function LeyGondolas() {
           id: documentFinded?.idCategory || -1,
           name: documentFinded?.categorieCatalog || '',
         },
-        bestLowerProduct: documentFinded?.bestLowerProduct || '',
+        bestLowerProduct: {
+          idRow: index,
+          id: documentFinded?.idBestLowerProduct || '',
+          name: documentFinded?.nameBestLowerProduct || '',
+        },
       }
     }
   )

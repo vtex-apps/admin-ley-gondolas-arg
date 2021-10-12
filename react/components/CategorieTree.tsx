@@ -72,7 +72,6 @@ export default function CategoriesTree({
       }
     >
       <div>
-        <div />
         {dataFromGetCategoryTree && (
           <RecurviseChildenList
             category={dataFromGetCategoryTree}

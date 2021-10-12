@@ -9,12 +9,19 @@ declare global {
     id: number
     name: string
   }
+
+  export interface Product {
+    idRow: number
+    id: string
+    name: string
+  }
+
   export interface CategoriesRow {
     id: number
     idDocument: string
     categorieLaw: string
     categorieCatalog: CategorieCatalog
-    bestLowerProduct: string
+    bestLowerProduct: Product
   }
 
   export interface CategoriesTableProps {
@@ -26,7 +33,8 @@ declare global {
     categorieLaw: string
     categorieCatalog: string
     idCategory: number
-    bestLowerProduct: string
+    nameBestLowerProduct: string
+    idBestLowerProduct: string
   }
 
   export interface CategoriesTreeProps {
@@ -49,5 +57,14 @@ declare global {
     selectedCategory: string
     setSelectedCategory: (category: string) => void
     setSelectedIdCategory: (id: number) => void
+  }
+
+  export interface ProductTableProps {
+    idRow: number
+    nameProduct: string
+    idProduct: string
+    items: CategoriesRow[]
+    setItems: (items: CategoriesRow[]) => void
+    closeModal: ({ id, idRow, name }: Product) => void
   }
 }
