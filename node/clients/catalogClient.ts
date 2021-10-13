@@ -23,4 +23,8 @@ export default class CatalogClient extends ExternalClient {
   public async getCategoryTree() {
     return this.http.getRaw(`/pub/category/tree/20`)
   }
+
+  public async getProductsOfCategory(categoryTree: string) {
+    return this.http.getRaw(`/pub/products/search?fq=C:/${categoryTree}/`)
+  }
 }

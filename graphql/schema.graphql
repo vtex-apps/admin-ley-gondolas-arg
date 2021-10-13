@@ -1,6 +1,7 @@
 type Query {
   getData: GetDataResponse
   getCategoryTree: GetCategoryTreeResponse
+  getProductsOfCategory(categoryTree: String): GetProductsOfCategoryTreeResponse
 }
 
 type Mutation {

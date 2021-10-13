@@ -1,26 +1,34 @@
 /* eslint-disable @typescript-eslint/prefer-optional-chain */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Button, Modal, Tag } from 'vtex.styleguide'
-import { useQuery } from 'react-apollo'
+import { useQuery, useLazyQuery } from 'react-apollo'
 import { useIntl } from 'react-intl'
 
 import { titlesIntl } from '../utils/intl'
 import getCategoryTree from '../graphql/getCategoryTree.gql'
+import getProductsOfCategory from '../graphql/getProductsOfCategory.gql'
 import LoadingSpinner from './LoadingSpinner'
+import ProductsTable from './ProductsTable'
 
-export default function ProductTable({
+export default function ProductSearch({
   idRow,
   nameProduct,
   idProduct,
   items,
   setItems,
   closeModal,
-}: ProductTableProps) {
+}: ProductSearchProps) {
   const intl = useIntl()
   const [selectedProduct, setSelectedCategory] = useState('')
   const [selectedIdProduct, setSelectedIdCategory] = useState('')
   const [categoryTree, setCategoryTree] = useState('')
+  const [listOfProducts, setListOfProducts] = useState<ProductToTable[]>([])
+
+  const [
+    getProductsOfCategoryQuery,
+    { data: dataProducts, loading: loadingProducts, error: errorProducts },
+  ] = useLazyQuery(getProductsOfCategory)
 
   console.info('idProduct', idProduct)
   const responseFromGetCategoryTree = useQuery(getCategoryTree, {
@@ -32,14 +40,9 @@ export default function ProductTable({
 
   const idCategoryOfRow = items[idRow].categorieCatalog.id
 
-  console.info('id de la categoria de la fila', idCategoryOfRow)
-  console.info('dataFromGetCategoryTree', dataFromGetCategoryTree)
-
   dataFromGetCategoryTree?.forEach(
     (c: CategoryChildenListProps) => !categoryTree && findCategoryTree(c)
   )
-
-  console.info('------categoryTree-------', categoryTree)
 
   function findCategoryTree(
     categoryToCheck: CategoryChildenListProps,
@@ -77,6 +80,59 @@ export default function ProductTable({
     closeModal({ id: '', idRow: -1, name: '' })
   }
 
+  useEffect(() => {
+    if (categoryTree) {
+      console.info('------categoryTree-------', categoryTree)
+
+      getProductsOfCategoryQuery({ variables: { categoryTree } })
+    }
+  }, [categoryTree, getProductsOfCategoryQuery])
+
+  useEffect(() => {
+    if (loadingProducts) {
+      console.info('loadingProducts', loadingProducts)
+    }
+
+    if (errorProducts) {
+      console.info('errorProducts', errorProducts)
+    }
+
+    // eslint-disable-next-line vtex/prefer-early-return
+    if (dataProducts) {
+      console.info('dataProducts', dataProducts)
+      const listOfProductsTemp: ProductToTable[] =
+        dataProducts.getProductsOfCategory.data.map(
+          (p: ProductFromQuery, index: number) => {
+            return {
+              id: index,
+              image: {
+                imageId: p.items[0].images[0].imageId,
+                imageUrl: p.items[0].images[0].imageUrl,
+                imageText: p.items[0].images[0].imageText,
+              },
+              productId: p.productId,
+              productName: {
+                name: p.productName,
+                link: p.linkText,
+              },
+              brand: p.brand,
+              categoryId: p.categoryId,
+              pricePerUnit: p.pricePerUnit && p.pricePerUnit[0],
+              leyDeGondolas: p.leyDeGondolas,
+            }
+          }
+        )
+
+      listOfProductsTemp.sort(
+        (a, b) =>
+          (a.pricePerUnit != null ? a.pricePerUnit : Infinity) -
+          (b.pricePerUnit != null ? b.pricePerUnit : Infinity)
+      )
+
+      setListOfProducts(listOfProductsTemp)
+    }
+  }, [dataProducts, loadingProducts, errorProducts])
+
   return (
     <Modal
       centered
@@ -112,7 +168,10 @@ export default function ProductTable({
       }
     >
       <div>
-        {dataFromGetCategoryTree && `test`}
+        {listOfProducts.length > 0 && (
+          <ProductsTable listOfProducts={listOfProducts} />
+        )}
+
         {!dataFromGetCategoryTree && <LoadingSpinner />}
       </div>
     </Modal>

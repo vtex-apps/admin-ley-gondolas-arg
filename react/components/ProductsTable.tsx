@@ -1,97 +1,63 @@
-/* eslint-disable @typescript-eslint/no-use-before-define */
-/* eslint-disable react/jsx-handler-names */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import {
-  EXPERIMENTAL_Table as Table,
-  Input,
-  Button,
-  Tag,
-} from 'vtex.styleguide'
+import { EXPERIMENTAL_Table as Table, Input, Link } from 'vtex.styleguide'
 import useTableMeasures from '@vtex/styleguide/lib/EXPERIMENTAL_Table/hooks/useTableMeasures'
 import React, { useState, useEffect, useCallback } from 'react'
 import { useIntl } from 'react-intl'
+import { useRuntime } from 'vtex.render-runtime'
 
 import { titlesIntl } from '../utils/intl'
-import CategoriesTree from './CategorieTree'
-import ProductSearch from './ProductSearch'
 
-export default function CategoriesTable({
-  categoriesList,
-}: CategoriesTableProps) {
+export default function ProductsTable({ listOfProducts }: ProductTableProps) {
   const intl = useIntl()
-  const [items, setItems] = useState<CategoriesRow[]>(categoriesList)
-  const [isCategoryModalOpen, setIsCategoryModalOpen] = useState(false)
-  const [nameCategoryClick, setNameCategoryClick] = useState('')
-  const [rowCategoryClick, setRowCategoryClick] = useState(-1)
-  const [isProductModalOpen, setIsProductModalOpen] = useState(false)
-  const [nameProductClick, setNameProductClick] = useState('')
-  const [idProductClick, setIdProductClick] = useState('')
-  const [rowProductClick, setRowProductClick] = useState(-1)
+  const { workspace, account } = useRuntime()
+
   const columns = [
     {
-      id: 'categorieLaw',
-      title: intl.formatMessage(titlesIntl.categoriesTableCategorieLaw),
-    },
-    {
-      id: 'categorieCatalog',
-      title: intl.formatMessage(titlesIntl.categoriesTableCategorieCatalog),
+      id: 'image',
+      title: 'image',
       cellRenderer: ({ data }: any) => {
         return (
-          <div>
-            <div>{data.name && <Tag bgColor="#F71963">{data.name}</Tag>}</div>
-            <div className="mt1">
-              <Button
-                variation="secondary"
-                size="small"
-                onClick={() => handleModalCategorieCatalog(data)}
-              >
-                {!data.name &&
-                  `${intl.formatMessage(titlesIntl.selectCategory)}`}
-                {data.name &&
-                  `${intl.formatMessage(titlesIntl.changeCategory)}`}
-              </Button>
-            </div>
-          </div>
+          <img id={data.imageId} src={data.imageUrl} alt={data.imageText} />
         )
       },
     },
     {
-      id: 'bestLowerProduct',
-      title: intl.formatMessage(titlesIntl.categoriesTableBestLowerProduct),
+      id: 'productId',
+      title: 'productId',
+    },
+    {
+      id: 'productName',
+      title: 'productName',
       cellRenderer: ({ data }: any) => {
         return (
-          <div>
-            <div>{data.name && <Tag bgColor="#F71963">{data.name}</Tag>}</div>
-            <div className="mt1">
-              <Button
-                variation="secondary"
-                size="small"
-                onClick={() => handleModalProducts(data)}
-              >
-                {!data.name && `Selecionar Producto Menor Precio x Unidad`}
-                {data.name && `Cambiar Producto Menor Precio x Unidad`}
-              </Button>
-            </div>
-          </div>
+          <Link
+            href={`https://${workspace}--${account}.myvtex.com/${data.link}/p`}
+            target="_blank"
+            mediumWeigth
+          >
+            {data.name}
+          </Link>
         )
       },
+    },
+    {
+      id: 'brand',
+      title: 'brand',
+    },
+    {
+      id: 'pricePerUnit',
+      title: 'pricePerUnit',
+    },
+    {
+      id: 'leyDeGondolas',
+      title: 'leyDeGondolas',
     },
   ]
 
-  const handleModalCategorieCatalog = (categorieCatalog: any) => {
-    setRowCategoryClick(categorieCatalog.idRow)
-    setNameCategoryClick(categorieCatalog.name)
-    setIsCategoryModalOpen(!isCategoryModalOpen)
-  }
+  /*
 
-  const handleModalProducts = (product: any) => {
-    setRowProductClick(product.idRow)
-    setIdProductClick(product.id)
-    setNameProductClick(product.name)
-    setIsProductModalOpen(!isProductModalOpen)
-  }
-
-  const [filteredItems, setFilteredItems] = useState(items)
+                    */
+  const [filteredItems, setFilteredItems] = useState(listOfProducts)
   const [filterStatements, setFilterStatements] = useState([])
 
   const ITEMS_PER_PAGE = 5
@@ -127,14 +93,27 @@ export default function CategoriesTable({
   })
 
   function handleFiltersChange(statements = []) {
-    let newData = items.slice()
+    let newData = listOfProducts.slice()
 
     statements.forEach((st: any) => {
       if (!st || !st.object) return
       const { subject, verb, object } = st
 
       switch (subject) {
-        case 'categorieLaw':
+        case 'productId':
+          if (verb === 'contains') {
+            newData = newData.filter((item: any) => {
+              return item[subject].includes(object)
+            })
+          } else if (verb === '=') {
+            newData = newData.filter((item: any) => item[subject] === object)
+          } else if (verb === '!=') {
+            newData = newData.filter((item: any) => item[subject] !== object)
+          }
+
+          break
+
+        case 'productName':
           if (verb === 'contains') {
             newData = newData.filter((item: any) => {
               return item[subject].includes(object)
@@ -163,15 +142,19 @@ export default function CategoriesTable({
   const filterApply = intl.formatMessage(titlesIntl.filterApply)
 
   const filters = {
-    alwaysVisibleFilters: ['categorieLaw'],
+    alwaysVisibleFilters: ['productId', 'productName'],
     statements: filterStatements,
     onChangeStatements: handleFiltersChange,
     clearAllFiltersButtonLabel: filterClear,
     collapseLeft: true,
     submitFilterLabel: filterApply,
     options: {
-      categorieLaw: {
-        label: intl.formatMessage(titlesIntl.categoriesTableCategorieLaw),
+      productId: {
+        label: 'productId',
+        ...simpleInputVerbsAndLabel(),
+      },
+      productName: {
+        label: 'productName',
         ...simpleInputVerbsAndLabel(),
       },
     },
@@ -238,20 +221,6 @@ export default function CategoriesTable({
     comfortableLabel: 'Comfortable',
   }
 
-  const save = {
-    label: 'Guardar',
-    onClick: () => {
-      console.info('Guardar')
-      console.info('items', items)
-    },
-  }
-
-  useEffect(() => {
-    const filterBar = document.getElementById('vtex-table-v2__filter-bar')
-
-    filterBar?.classList.remove('mb5')
-  }, [])
-
   return (
     <div>
       <Table measures={measures} columns={columns} items={slicedItems}>
@@ -260,29 +229,9 @@ export default function CategoriesTable({
           <Table.FilterBar {...filters} />
           <Table.Toolbar.ButtonGroup>
             <Table.Toolbar.ButtonGroup.Density {...density} />
-            <Table.Toolbar.ButtonGroup.NewLine {...save} />
           </Table.Toolbar.ButtonGroup>
         </Table.Toolbar>
       </Table>
-      {isCategoryModalOpen && (
-        <CategoriesTree
-          idRow={rowCategoryClick}
-          nameCategory={nameCategoryClick}
-          items={items}
-          setItems={setItems}
-          closeModal={handleModalCategorieCatalog}
-        />
-      )}
-      {isProductModalOpen && (
-        <ProductSearch
-          idRow={rowProductClick}
-          nameProduct={nameProductClick}
-          idProduct={idProductClick}
-          items={items}
-          setItems={setItems}
-          closeModal={handleModalProducts}
-        />
-      )}
     </div>
   )
 }

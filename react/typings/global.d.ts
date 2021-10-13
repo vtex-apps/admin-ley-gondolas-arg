@@ -59,12 +59,49 @@ declare global {
     setSelectedIdCategory: (id: number) => void
   }
 
-  export interface ProductTableProps {
+  export interface ProductSearchProps {
     idRow: number
     nameProduct: string
     idProduct: string
     items: CategoriesRow[]
     setItems: (items: CategoriesRow[]) => void
     closeModal: ({ id, idRow, name }: Product) => void
+  }
+  export interface Image {
+    imageId: string
+    imageUrl: string
+    imageText: string
+  }
+
+  export interface Item {
+    itemId: string
+    name: string
+    images: Image[]
+  }
+
+  export interface ProductFromQuery {
+    productId: string
+    productName: string
+    brand: string
+    categoryId: string
+    pricePerUnit: number[]
+    leyDeGondolas: string[]
+    linkText: string
+    items: Item[]
+  }
+
+  export interface ProductToTable {
+    productId: string
+    productName: string
+    brand: string
+    categoryId: string
+    pricePerUnit: number
+    leyDeGondolas: string[]
+    linkText: string
+    items: Item[]
+  }
+
+  export interface ProductTableProps {
+    listOfProducts: ProductToTable[]
   }
 }

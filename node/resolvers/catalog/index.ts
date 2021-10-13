@@ -7,4 +7,11 @@ export const queries = {
   ): Promise<any> => {
     return ctx.clients.catalogClient.getCategoryTree()
   },
+  getProductsOfCategory: async (
+    _: unknown,
+    { categoryTree }: any,
+    ctx: Context
+  ): Promise<any> => {
+    return ctx.clients.catalogClient.getProductsOfCategory(categoryTree)
+  },
 }
