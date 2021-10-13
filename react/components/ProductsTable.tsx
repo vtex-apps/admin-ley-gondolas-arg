@@ -14,7 +14,7 @@ export default function ProductsTable({ listOfProducts }: ProductTableProps) {
   const columns = [
     {
       id: 'image',
-      title: 'image',
+      title: intl.formatMessage(titlesIntl.productsTableImage),
       cellRenderer: ({ data }: any) => {
         return (
           <img id={data.imageId} src={data.imageUrl} alt={data.imageText} />
@@ -23,11 +23,11 @@ export default function ProductsTable({ listOfProducts }: ProductTableProps) {
     },
     {
       id: 'productId',
-      title: 'productId',
+      title: intl.formatMessage(titlesIntl.productsTableProductId),
     },
     {
       id: 'productName',
-      title: 'productName',
+      title: intl.formatMessage(titlesIntl.productsTableProductName),
       cellRenderer: ({ data }: any) => {
         return (
           <Link
@@ -42,21 +42,18 @@ export default function ProductsTable({ listOfProducts }: ProductTableProps) {
     },
     {
       id: 'brand',
-      title: 'brand',
+      title: intl.formatMessage(titlesIntl.productsTableBrand),
     },
     {
       id: 'pricePerUnit',
-      title: 'pricePerUnit',
+      title: intl.formatMessage(titlesIntl.productsTablePricePerUnit),
     },
     {
       id: 'leyDeGondolas',
-      title: 'leyDeGondolas',
+      title: intl.formatMessage(titlesIntl.productsTableLeyDeGondalas),
     },
   ]
 
-  /*
-
-                    */
   const [filteredItems, setFilteredItems] = useState(listOfProducts)
   const [filterStatements, setFilterStatements] = useState([])
 
@@ -150,11 +147,11 @@ export default function ProductsTable({ listOfProducts }: ProductTableProps) {
     submitFilterLabel: filterApply,
     options: {
       productId: {
-        label: 'productId',
+        label: intl.formatMessage(titlesIntl.productsTableProductId),
         ...simpleInputVerbsAndLabel(),
       },
       productName: {
-        label: 'productName',
+        label: intl.formatMessage(titlesIntl.productsTableProductName),
         ...simpleInputVerbsAndLabel(),
       },
     },

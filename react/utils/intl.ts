@@ -36,4 +36,22 @@ export const titlesIntl = defineMessages({
   saveSelectedCategory: {
     id: `${prefix}saveSelectedCategory`,
   },
+  productsTableImage: {
+    id: `${prefix}productsTableImage`,
+  },
+  productsTableProductId: {
+    id: `${prefix}productsTableProductId`,
+  },
+  productsTableProductName: {
+    id: `${prefix}productsTableProductName`,
+  },
+  productsTableBrand: {
+    id: `${prefix}productsTableBrand`,
+  },
+  productsTablePricePerUnit: {
+    id: `${prefix}productsTablePricePerUnit`,
+  },
+  productsTableLeyDeGondalas: {
+    id: `${prefix}productsTableLeyDeGondalas`,
+  },
 })

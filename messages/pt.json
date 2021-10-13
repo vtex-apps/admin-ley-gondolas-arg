@@ -19,5 +19,11 @@
   "admin/admin.app.ley-gondolas-arg.changeCategory": "Mudar a categoria",
   "admin/admin.app.ley-gondolas-arg.currentCategory": "Categoria Atual",
   "admin/admin.app.ley-gondolas-arg.cancel": "Cancelar",
-  "admin/admin.app.ley-gondolas-arg.saveSelectedCategory": "Salvar categoria selecionada"
+  "admin/admin.app.ley-gondolas-arg.saveSelectedCategory": "Salvar categoria selecionada",
+  "admin/admin.app.ley-gondolas-arg.productsTableImage": "Imagem",
+  "admin/admin.app.ley-gondolas-arg.productsTableProductId": "Identificação",
+  "admin/admin.app.ley-gondolas-arg.productsTableProductName": "Nome",
+  "admin/admin.app.ley-gondolas-arg.productsTableBrand": "Marca",
+  "admin/admin.app.ley-gondolas-arg.productsTablePricePerUnit": "Preço por unidade",
+  "admin/admin.app.ley-gondolas-arg.productsTableLeyDeGondalas": "Ley de Gondalas"
 }
