@@ -35,11 +35,12 @@ export default function CategoriesTree({
     responseFromGetCategoryTree.data?.getCategoryTree?.data
 
   const handleChangeCategory = async () => {
+    closeModal({ id: -1, idRow: -1, name: '' })
+
     const tempItems: CategoriesRow[] = items
 
     tempItems[idRow].categorieCatalog.name = selectedCategory
     tempItems[idRow].categorieCatalog.id = selectedIdCategory
-    setItems(tempItems)
 
     const response = await SaveInMasterdata(
       tempItems,
@@ -48,13 +49,11 @@ export default function CategoriesTree({
       createDocumentMutation
     )
 
-    console.info('response', response)
     if (response.data.createDocument) {
-      console.info('createDocument')
-      // modificar tempItems para agregarle el idDocument
+      tempItems[idRow].idDocument = response.data.createDocument.data.DocumentId
     }
 
-    closeModal({ id: -1, idRow: -1, name: '' })
+    setItems(tempItems)
   }
 
   return (

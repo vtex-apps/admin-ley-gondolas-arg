@@ -35,10 +35,12 @@ export default async function SaveInMasterdata(
 
   try {
     if (idDocument) {
+      console.info('updateDocumentMutation')
       response = await updateDocumentMutation({
         variables: { documentId: idDocument, body: bodyMasterdata },
       })
     } else {
+      console.info('createDocumentMutation')
       response = await createDocumentMutation({
         variables: { body: bodyMasterdata },
       })

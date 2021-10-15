@@ -16,11 +16,7 @@ export default function LeyGondolas() {
     ssr: false,
   })
 
-  const statusFromMasterData = responseFromGetData.data?.getData?.status
   const dataFromMasterData = responseFromGetData.data?.getData?.data
-
-  console.info('dataFromMasterData', dataFromMasterData)
-  console.info('statusFromMasterData', statusFromMasterData)
 
   const categoriesList: CategoriesRow[] = listOfLawCategories.map(
     (lawCategorie: string, index: number) => {

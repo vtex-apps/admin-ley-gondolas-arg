@@ -87,7 +87,7 @@ export default function ProductsTable({
     },
   ]
 
-  const handleClickSeeCatalog = (product: Catalog) => {
+  const handleClickSeeCatalog = async (product: Catalog) => {
     const tempItems: CategoriesRow[] = items
 
     tempItems[product.idRow].bestLowerProduct.id = product.productId
@@ -99,6 +99,20 @@ export default function ProductsTable({
       updateDocumentMutation,
       createDocumentMutation
     )
+
+    const response = await SaveInMasterdata(
+      tempItems,
+      product.idRow,
+      updateDocumentMutation,
+      createDocumentMutation
+    )
+
+    if (response.data.createDocument) {
+      tempItems[product.idRow].idDocument =
+        response.data.createDocument.data.DocumentId
+    }
+
+    setItems(tempItems)
   }
 
   const [filteredItems, setFilteredItems] = useState(listOfProducts)
