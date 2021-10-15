@@ -3,47 +3,44 @@ import {
   EXPERIMENTAL_Table as Table,
   Input,
   Link,
-  Checkbox,
+  ButtonWithIcon,
 } from 'vtex.styleguide'
+import Edit from '@vtex/styleguide/lib/icon/Edit'
 import useTableMeasures from '@vtex/styleguide/lib/EXPERIMENTAL_Table/hooks/useTableMeasures'
 import React, { useState, useEffect, useCallback } from 'react'
 import { useIntl } from 'react-intl'
 import { useRuntime } from 'vtex.render-runtime'
+import { useMutation } from 'react-apollo'
 
+import updateDocument from '../graphql/updateDocument.gql'
+import createDocument from '../graphql/createDocument.gql'
 import { titlesIntl } from '../utils/intl'
+import SaveInMasterdata from './SaveInMasterdata'
 
 export default function ProductsTable({
   listOfProducts,
-  setListOfProducts,
+  items,
+  setItems,
 }: ProductTableProps) {
   const intl = useIntl()
   const { workspace, account } = useRuntime()
-  const [checkIdRow, setCheckIdRow] = useState(
-    listOfProducts.find((p) => p.action.value)?.action.idRow
-  )
+  const [updateDocumentMutation] = useMutation(updateDocument)
 
+  const [createDocumentMutation] = useMutation(createDocument)
   const columns = [
     {
-      id: 'action',
-      title: 'Action',
+      id: 'catalog',
+      title: 'See on Catalog',
       cellRenderer: ({ data }: any) => {
-        const id = data.idRow
+        const edit = <Edit />
 
         return (
-          <Checkbox
-            id={id}
-            checked={id === checkIdRow}
-            onChange={() => {
-              const listOfProductsTemp = listOfProducts
-
-              listOfProductsTemp.forEach((p) =>
-                p.action.idRow === id
-                  ? (p.action.value = true)
-                  : (p.action.value = false)
-              )
-              setCheckIdRow(id)
-              setListOfProducts(listOfProductsTemp)
-            }}
+          <ButtonWithIcon
+            href={`https://${workspace}--${account}.myvtex.com/admin/Site/ProdutoForm.aspx?id=${data.productId}`}
+            target="_blank"
+            // eslint-disable-next-line @typescript-eslint/no-use-before-define
+            onClick={() => handleClickSeeCatalog(data)}
+            icon={edit}
           />
         )
       },
@@ -77,18 +74,32 @@ export default function ProductsTable({
       },
     },
     {
-      id: 'brand',
-      title: intl.formatMessage(titlesIntl.productsTableBrand),
-    },
-    {
       id: 'pricePerUnit',
       title: intl.formatMessage(titlesIntl.productsTablePricePerUnit),
+    },
+    {
+      id: 'brand',
+      title: intl.formatMessage(titlesIntl.productsTableBrand),
     },
     {
       id: 'leyDeGondolas',
       title: intl.formatMessage(titlesIntl.productsTableLeyDeGondalas),
     },
   ]
+
+  const handleClickSeeCatalog = (product: Catalog) => {
+    const tempItems: CategoriesRow[] = items
+
+    tempItems[product.idRow].bestLowerProduct.id = product.productId
+    tempItems[product.idRow].bestLowerProduct.name = product.name
+    setItems(tempItems)
+    SaveInMasterdata(
+      tempItems,
+      product.idRow,
+      updateDocumentMutation,
+      createDocumentMutation
+    )
+  }
 
   const [filteredItems, setFilteredItems] = useState(listOfProducts)
   const [filterStatements, setFilterStatements] = useState([])

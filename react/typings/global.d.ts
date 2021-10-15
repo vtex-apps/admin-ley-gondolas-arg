@@ -89,13 +89,14 @@ declare global {
     linkText: string
     items: Item[]
   }
-  export interface ActionCheck {
+  export interface Catalog {
     idRow: number
-    value: boolean
+    productId: string
+    name: string
   }
   export interface ProductToTable {
     id: number
-    action: ActionCheck
+    catalog: Catalog
     productId: string
     productName: {
       name: string
@@ -112,5 +113,15 @@ declare global {
   export interface ProductTableProps {
     listOfProducts: ProductToTable[]
     setListOfProducts: (listOfProducts: ProductToTable[]) => void
+    items: CategoriesRow[]
+    setItems: (items: CategoriesRow[]) => void
+  }
+
+  export interface BodySaveDocumentMasterData {
+    categorieLaw: string
+    categorieCatalog: string
+    idCategory: number
+    nameBestLowerProduct: string
+    idBestLowerProduct: string
   }
 }

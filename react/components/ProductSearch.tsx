@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/prefer-optional-chain */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState, useEffect } from 'react'
-import { Button, Modal, Tag } from 'vtex.styleguide'
+import { Modal /* , Tag */ } from 'vtex.styleguide'
 import { useQuery, useLazyQuery } from 'react-apollo'
-import { useIntl } from 'react-intl'
+// import { useIntl } from 'react-intl'
 
-import { titlesIntl } from '../utils/intl'
+// import { titlesIntl } from '../utils/intl'
 import getCategoryTree from '../graphql/getCategoryTree.gql'
 import getProductsOfCategory from '../graphql/getProductsOfCategory.gql'
 import LoadingSpinner from './LoadingSpinner'
@@ -13,15 +13,12 @@ import ProductsTable from './ProductsTable'
 
 export default function ProductSearch({
   idRow,
-  nameProduct,
-  idProduct,
+  // nameProduct,
   items,
   setItems,
   closeModal,
 }: ProductSearchProps) {
-  const intl = useIntl()
-  const [selectedProduct, setSelectedCategory] = useState('')
-  const [selectedIdProduct, setSelectedIdCategory] = useState('')
+  // const intl = useIntl()
   const [categoryTree, setCategoryTree] = useState('')
   const [listOfProducts, setListOfProducts] = useState<ProductToTable[]>([])
 
@@ -30,7 +27,6 @@ export default function ProductSearch({
     { data: dataProducts, loading: loadingProducts, error: errorProducts },
   ] = useLazyQuery(getProductsOfCategory)
 
-  console.info('idProduct', idProduct)
   const responseFromGetCategoryTree = useQuery(getCategoryTree, {
     ssr: false,
   })
@@ -49,7 +45,6 @@ export default function ProductSearch({
     parents = ''
   ): any {
     if (categoryToCheck.children.some((c) => c.id === idCategoryOfRow)) {
-      console.info(true)
       setCategoryTree(
         `${!parents ? categoryToCheck.id : parents}/${idCategoryOfRow}`
       )
@@ -67,67 +62,28 @@ export default function ProductSearch({
     }
   }
 
-  const handleChangeProduct = () => {
-    console.info('listOfProducts', listOfProducts)
-    const productSelected = listOfProducts.find((p) => p.action.value)
-
-    if (productSelected) {
-      const tempItems: CategoriesRow[] = items
-
-      console.info('selectedProduct', selectedProduct)
-      console.info('selectedIdProduct', selectedIdProduct)
-      setSelectedCategory(productSelected.productName.name)
-      setSelectedIdCategory(productSelected.productId)
-      tempItems[idRow].bestLowerProduct.name = productSelected.productName.name // selectedProduct
-      tempItems[idRow].bestLowerProduct.id = productSelected.productId // selectedIdProduct
-      setItems(tempItems)
-    }
-
-    closeModal({ id: '', idRow: -1, name: '' })
-  }
-
   useEffect(() => {
     if (categoryTree) {
-      console.info('------categoryTree-------', categoryTree)
-
       getProductsOfCategoryQuery({ variables: { categoryTree } })
     }
   }, [categoryTree, getProductsOfCategoryQuery])
 
   useEffect(() => {
-    if (loadingProducts) {
-      console.info('loadingProducts', loadingProducts)
-    }
-
     if (errorProducts) {
       console.info('errorProducts', errorProducts)
     }
 
     // eslint-disable-next-line vtex/prefer-early-return
     if (dataProducts) {
-      const idBestLowerProductSelected = items[idRow].bestLowerProduct.id
       const listOfProductsTemp: ProductToTable[] =
         dataProducts.getProductsOfCategory.data.map(
           (p: ProductFromQuery, index: number) => {
-            let valueAction
-
-            if (idBestLowerProductSelected) {
-              if (p.productId === idBestLowerProductSelected) {
-                valueAction = true
-              } else {
-                valueAction = false
-              }
-            } else if (p.leyDeGondolas) {
-              valueAction = p.leyDeGondolas.includes('Mejor Menor Precio')
-            } else {
-              valueAction = false
-            }
-
             return {
               id: index,
-              action: {
-                idRow: index,
-                value: valueAction,
+              catalog: {
+                idRow,
+                productId: p.productId,
+                name: p.productName,
               },
               image: {
                 imageId: p.items[0].images[0].imageId,
@@ -155,14 +111,14 @@ export default function ProductSearch({
 
       setListOfProducts(listOfProductsTemp)
     }
-  }, [dataProducts, loadingProducts, errorProducts])
+  }, [dataProducts, loadingProducts, errorProducts, idRow])
 
   return (
     <Modal
       centered
       isOpen
       onClose={() => closeModal({ id: '', idRow: -1, name: '' })}
-      bottomBar={
+      /* bottomBar={
         <div className="nowrap">
           {nameProduct && (
             <span className="mr4">
@@ -171,35 +127,20 @@ export default function ProductSearch({
               )}: ${nameProduct}`}</Tag>
             </span>
           )}
-          <span className="mr4">
-            <Button
-              variation="tertiary"
-              onClick={() => closeModal({ id: '', idRow: -1, name: '' })}
-            >
-              {`${intl.formatMessage(titlesIntl.cancel)}`}
-            </Button>
-          </span>
-          <span>
-            <Button
-              variation="primary"
-              size="small"
-              onClick={() => handleChangeProduct()}
-            >
-              {`${intl.formatMessage(titlesIntl.saveSelectedCategory)}`}
-            </Button>
-          </span>
         </div>
-      }
+      } */
     >
       <div>
-        {listOfProducts.length > 0 && (
+        {dataProducts && listOfProducts.length > 0 && (
           <ProductsTable
             listOfProducts={listOfProducts}
             setListOfProducts={setListOfProducts}
+            items={items}
+            setItems={setItems}
           />
         )}
-
-        {!dataFromGetCategoryTree && <LoadingSpinner />}
+        {loadingProducts && <LoadingSpinner />}
+        {errorProducts && 'Intente despues'}
       </div>
     </Modal>
   )

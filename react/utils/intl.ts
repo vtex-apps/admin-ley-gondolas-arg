@@ -57,4 +57,10 @@ export const titlesIntl = defineMessages({
   currentProduct: {
     id: `${prefix}currentProduct`,
   },
+  selectProduct: {
+    id: `${prefix}selectProduct`,
+  },
+  changeProduct: {
+    id: `${prefix}changeProduct`,
+  },
 })

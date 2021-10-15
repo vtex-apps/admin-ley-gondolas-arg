@@ -25,10 +25,14 @@ export default class MasterDataClient extends ExternalClient {
   }
 
   public async createDocument(body: SaveDataInMasterDataBody) {
-    return this.http.postRaw(
+    const aux = await this.http.postRaw(
       `/leyGondolas/documents?_schema=ley-gondolas`,
       body
     )
+
+    console.info('aux', aux)
+
+    return aux
   }
 
   public async updateDocument(id: string, body: SaveDataInMasterDataBody) {

@@ -68,8 +68,8 @@ export default function CategoriesTable({
                 size="small"
                 onClick={() => handleModalProducts(data)}
               >
-                {!data.name && `Selecionar Producto Menor Precio x Unidad`}
-                {data.name && `Cambiar Producto Menor Precio x Unidad`}
+                {!data.name && intl.formatMessage(titlesIntl.selectProduct)}
+                {data.name && intl.formatMessage(titlesIntl.changeProduct)}
               </Button>
             </div>
           </div>
@@ -238,14 +238,6 @@ export default function CategoriesTable({
     comfortableLabel: 'Comfortable',
   }
 
-  const save = {
-    label: 'Guardar',
-    onClick: () => {
-      console.info('Guardar')
-      console.info('items', items)
-    },
-  }
-
   useEffect(() => {
     const filterBar = document.getElementById('vtex-table-v2__filter-bar')
 
@@ -260,7 +252,6 @@ export default function CategoriesTable({
           <Table.FilterBar {...filters} />
           <Table.Toolbar.ButtonGroup>
             <Table.Toolbar.ButtonGroup.Density {...density} />
-            <Table.Toolbar.ButtonGroup.NewLine {...save} />
           </Table.Toolbar.ButtonGroup>
         </Table.Toolbar>
       </Table>

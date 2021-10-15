@@ -1,5 +1,10 @@
 mutation createDocument($body: BodyCreateDocumentMasterData) {
-  createDocument(documentId: $documentId, body: $body) {
+  createDocument(body: $body) {
     status
+    data {
+      Id
+      Href
+      DocumentId
+    }
   }
 }

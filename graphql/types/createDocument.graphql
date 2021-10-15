@@ -1,9 +1,18 @@
 input BodyCreateDocumentMasterData {
   categorieLaw: String
   categorieCatalog: String
-  bestLowerProduct: String
+  idCategory: Int
+  nameBestLowerProduct: String
+  idBestLowerProduct: String
+}
+
+type DataCreateDocumentResponse {
+  Id: String
+  Href: String
+  DocumentId: String
 }
 
 type CreateDocumentResponse {
   status: Int
+  data: DataCreateDocumentResponse
 }

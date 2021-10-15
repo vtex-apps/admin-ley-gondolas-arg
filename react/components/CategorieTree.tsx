@@ -1,14 +1,17 @@
 /* eslint-disable @typescript-eslint/prefer-optional-chain */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Button, Modal, Tag } from 'vtex.styleguide'
-import { useQuery } from 'react-apollo'
+import { useQuery, useMutation } from 'react-apollo'
 import { useIntl } from 'react-intl'
 
 import { titlesIntl } from '../utils/intl'
 import getCategoryTree from '../graphql/getCategoryTree.gql'
 import RecurviseChildenList from './RecurviseChildenList'
 import LoadingSpinner from './LoadingSpinner'
+import SaveInMasterdata from './SaveInMasterdata'
+import updateDocument from '../graphql/updateDocument.gql'
+import createDocument from '../graphql/createDocument.gql'
 
 export default function CategoriesTree({
   idRow,
@@ -20,6 +23,10 @@ export default function CategoriesTree({
   const intl = useIntl()
   const [selectedCategory, setSelectedCategory] = useState('')
   const [selectedIdCategory, setSelectedIdCategory] = useState(-1)
+  const [updateDocumentMutation] = useMutation(updateDocument)
+
+  const [createDocumentMutation, { data: dataCreateDocumentMutation }] =
+    useMutation(createDocument)
 
   const responseFromGetCategoryTree = useQuery(getCategoryTree, {
     ssr: false,
@@ -34,8 +41,22 @@ export default function CategoriesTree({
     tempItems[idRow].categorieCatalog.name = selectedCategory
     tempItems[idRow].categorieCatalog.id = selectedIdCategory
     setItems(tempItems)
+
+    SaveInMasterdata(
+      tempItems,
+      idRow,
+      updateDocumentMutation,
+      createDocumentMutation
+    )
+
     closeModal({ id: -1, idRow: -1, name: '' })
   }
+
+  useEffect(() => {
+    if (dataCreateDocumentMutation) {
+      console.info('dataCreateDocumentMutation', dataCreateDocumentMutation)
+    }
+  }, [dataCreateDocumentMutation])
 
   return (
     <Modal

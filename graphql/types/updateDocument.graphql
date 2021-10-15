@@ -1,7 +1,9 @@
 input BodyUpdateDocumentMasterData {
   categorieLaw: String
   categorieCatalog: String
-  bestLowerProduct: String
+  idCategory: Int
+  nameBestLowerProduct: String
+  idBestLowerProduct: String
 }
 
 type UpdateDocumentResponse {

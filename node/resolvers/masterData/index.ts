@@ -11,6 +11,8 @@ export const mutations = {
     { body }: any,
     ctx: Context
   ): Promise<any> => {
+    console.info('createDocument resolver aca')
+
     return ctx.clients.masterDataClient.createDocument(body)
   },
 
