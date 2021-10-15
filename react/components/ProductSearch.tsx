@@ -68,15 +68,21 @@ export default function ProductSearch({
   }
 
   const handleChangeProduct = () => {
-    const tempItems: CategoriesRow[] = items
+    console.info('listOfProducts', listOfProducts)
+    const productSelected = listOfProducts.find((p) => p.action.value)
 
-    console.info('selectedProduct', selectedProduct)
-    console.info('selectedIdProduct', selectedIdProduct)
-    setSelectedCategory('Test')
-    setSelectedIdCategory('123')
-    tempItems[idRow].bestLowerProduct.name = 'Test' // selectedProduct
-    tempItems[idRow].bestLowerProduct.id = '123' // selectedIdProduct
-    setItems(tempItems)
+    if (productSelected) {
+      const tempItems: CategoriesRow[] = items
+
+      console.info('selectedProduct', selectedProduct)
+      console.info('selectedIdProduct', selectedIdProduct)
+      setSelectedCategory(productSelected.productName.name)
+      setSelectedIdCategory(productSelected.productId)
+      tempItems[idRow].bestLowerProduct.name = productSelected.productName.name // selectedProduct
+      tempItems[idRow].bestLowerProduct.id = productSelected.productId // selectedIdProduct
+      setItems(tempItems)
+    }
+
     closeModal({ id: '', idRow: -1, name: '' })
   }
 
@@ -99,12 +105,30 @@ export default function ProductSearch({
 
     // eslint-disable-next-line vtex/prefer-early-return
     if (dataProducts) {
-      console.info('dataProducts', dataProducts)
+      const idBestLowerProductSelected = items[idRow].bestLowerProduct.id
       const listOfProductsTemp: ProductToTable[] =
         dataProducts.getProductsOfCategory.data.map(
           (p: ProductFromQuery, index: number) => {
+            let valueAction
+
+            if (idBestLowerProductSelected) {
+              if (p.productId === idBestLowerProductSelected) {
+                valueAction = true
+              } else {
+                valueAction = false
+              }
+            } else if (p.leyDeGondolas) {
+              valueAction = p.leyDeGondolas.includes('Mejor Menor Precio')
+            } else {
+              valueAction = false
+            }
+
             return {
               id: index,
+              action: {
+                idRow: index,
+                value: valueAction,
+              },
               image: {
                 imageId: p.items[0].images[0].imageId,
                 imageUrl: p.items[0].images[0].imageUrl,
@@ -143,7 +167,7 @@ export default function ProductSearch({
           {nameProduct && (
             <span className="mr4">
               <Tag bgColor="#F71963">{`${intl.formatMessage(
-                titlesIntl.currentCategory
+                titlesIntl.currentProduct
               )}: ${nameProduct}`}</Tag>
             </span>
           )}
@@ -169,7 +193,10 @@ export default function ProductSearch({
     >
       <div>
         {listOfProducts.length > 0 && (
-          <ProductsTable listOfProducts={listOfProducts} />
+          <ProductsTable
+            listOfProducts={listOfProducts}
+            setListOfProducts={setListOfProducts}
+          />
         )}
 
         {!dataFromGetCategoryTree && <LoadingSpinner />}

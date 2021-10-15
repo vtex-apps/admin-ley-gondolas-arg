@@ -89,10 +89,18 @@ declare global {
     linkText: string
     items: Item[]
   }
-
+  export interface ActionCheck {
+    idRow: number
+    value: boolean
+  }
   export interface ProductToTable {
+    id: number
+    action: ActionCheck
     productId: string
-    productName: string
+    productName: {
+      name: string
+      link: string
+    }
     brand: string
     categoryId: string
     pricePerUnit: number
@@ -103,5 +111,6 @@ declare global {
 
   export interface ProductTableProps {
     listOfProducts: ProductToTable[]
+    setListOfProducts: (listOfProducts: ProductToTable[]) => void
   }
 }

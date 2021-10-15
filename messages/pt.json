@@ -25,5 +25,6 @@
   "admin/admin.app.ley-gondolas-arg.productsTableProductName": "Nome",
   "admin/admin.app.ley-gondolas-arg.productsTableBrand": "Marca",
   "admin/admin.app.ley-gondolas-arg.productsTablePricePerUnit": "Preço por unidade",
-  "admin/admin.app.ley-gondolas-arg.productsTableLeyDeGondalas": "Ley de Gondalas"
+  "admin/admin.app.ley-gondolas-arg.productsTableLeyDeGondalas": "Ley de Gondalas",
+  "admin/admin.app.ley-gondolas-arg.currentProduct": "Produto Atual"
 }

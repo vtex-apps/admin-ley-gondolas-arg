@@ -54,4 +54,7 @@ export const titlesIntl = defineMessages({
   productsTableLeyDeGondalas: {
     id: `${prefix}productsTableLeyDeGondalas`,
   },
+  currentProduct: {
+    id: `${prefix}currentProduct`,
+  },
 })

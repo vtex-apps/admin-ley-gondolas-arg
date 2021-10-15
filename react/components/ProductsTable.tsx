@@ -1,5 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { EXPERIMENTAL_Table as Table, Input, Link } from 'vtex.styleguide'
+import {
+  EXPERIMENTAL_Table as Table,
+  Input,
+  Link,
+  Checkbox,
+} from 'vtex.styleguide'
 import useTableMeasures from '@vtex/styleguide/lib/EXPERIMENTAL_Table/hooks/useTableMeasures'
 import React, { useState, useEffect, useCallback } from 'react'
 import { useIntl } from 'react-intl'
@@ -7,11 +12,42 @@ import { useRuntime } from 'vtex.render-runtime'
 
 import { titlesIntl } from '../utils/intl'
 
-export default function ProductsTable({ listOfProducts }: ProductTableProps) {
+export default function ProductsTable({
+  listOfProducts,
+  setListOfProducts,
+}: ProductTableProps) {
   const intl = useIntl()
   const { workspace, account } = useRuntime()
+  const [checkIdRow, setCheckIdRow] = useState(
+    listOfProducts.find((p) => p.action.value)?.action.idRow
+  )
 
   const columns = [
+    {
+      id: 'action',
+      title: 'Action',
+      cellRenderer: ({ data }: any) => {
+        const id = data.idRow
+
+        return (
+          <Checkbox
+            id={id}
+            checked={id === checkIdRow}
+            onChange={() => {
+              const listOfProductsTemp = listOfProducts
+
+              listOfProductsTemp.forEach((p) =>
+                p.action.idRow === id
+                  ? (p.action.value = true)
+                  : (p.action.value = false)
+              )
+              setCheckIdRow(id)
+              setListOfProducts(listOfProductsTemp)
+            }}
+          />
+        )
+      },
+    },
     {
       id: 'image',
       title: intl.formatMessage(titlesIntl.productsTableImage),
