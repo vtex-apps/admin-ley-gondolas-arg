@@ -9,7 +9,7 @@ import updateDocument from '../graphql/updateDocument.gql'
 import createDocument from '../graphql/createDocument.gql' */
 
 // eslint-disable-next-line max-params
-export default function SaveInMasterdata(
+export default async function SaveInMasterdata(
   items: CategoriesRow[],
   rowId: number,
   updateDocumentMutation: any,
@@ -31,16 +31,20 @@ export default function SaveInMasterdata(
     idBestLowerProduct,
   }
 
+  let response
+
   try {
     if (idDocument) {
-      updateDocumentMutation({
+      response = await updateDocumentMutation({
         variables: { documentId: idDocument, body: bodyMasterdata },
       })
     } else {
-      createDocumentMutation({
+      response = await createDocumentMutation({
         variables: { body: bodyMasterdata },
       })
     }
+
+    return response
   } catch (error) {
     console.error(error)
   }

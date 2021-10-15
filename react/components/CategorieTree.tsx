@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/prefer-optional-chain */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { Button, Modal, Tag } from 'vtex.styleguide'
 import { useQuery, useMutation } from 'react-apollo'
 import { useIntl } from 'react-intl'
@@ -25,8 +25,7 @@ export default function CategoriesTree({
   const [selectedIdCategory, setSelectedIdCategory] = useState(-1)
   const [updateDocumentMutation] = useMutation(updateDocument)
 
-  const [createDocumentMutation, { data: dataCreateDocumentMutation }] =
-    useMutation(createDocument)
+  const [createDocumentMutation] = useMutation(createDocument)
 
   const responseFromGetCategoryTree = useQuery(getCategoryTree, {
     ssr: false,
@@ -35,28 +34,28 @@ export default function CategoriesTree({
   const dataFromGetCategoryTree: CategoryChildenListProps[] =
     responseFromGetCategoryTree.data?.getCategoryTree?.data
 
-  const handleChangeCategory = () => {
+  const handleChangeCategory = async () => {
     const tempItems: CategoriesRow[] = items
 
     tempItems[idRow].categorieCatalog.name = selectedCategory
     tempItems[idRow].categorieCatalog.id = selectedIdCategory
     setItems(tempItems)
 
-    SaveInMasterdata(
+    const response = await SaveInMasterdata(
       tempItems,
       idRow,
       updateDocumentMutation,
       createDocumentMutation
     )
 
+    console.info('response', response)
+    if (response.data.createDocument) {
+      console.info('createDocument')
+      // modificar tempItems para agregarle el idDocument
+    }
+
     closeModal({ id: -1, idRow: -1, name: '' })
   }
-
-  useEffect(() => {
-    if (dataCreateDocumentMutation) {
-      console.info('dataCreateDocumentMutation', dataCreateDocumentMutation)
-    }
-  }, [dataCreateDocumentMutation])
 
   return (
     <Modal
