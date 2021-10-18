@@ -51,8 +51,11 @@ export const titlesIntl = defineMessages({
   productsTablePricePerUnit: {
     id: `${prefix}productsTablePricePerUnit`,
   },
-  productsTableLeyDeGondalas: {
-    id: `${prefix}productsTableLeyDeGondalas`,
+  productsTablePyMEs: {
+    id: `${prefix}productsTablePyMEs`,
+  },
+  productsTableMejorMenorPrecio: {
+    id: `${prefix}productsTableMejorMenorPrecio`,
   },
   currentProduct: {
     id: `${prefix}currentProduct`,
@@ -62,5 +65,11 @@ export const titlesIntl = defineMessages({
   },
   lastSeen: {
     id: `${prefix}lastSeen`,
+  },
+  showInCatalog: {
+    id: `${prefix}showInCatalog`,
+  },
+  warningSelectCategory: {
+    id: `${prefix}warningSelectCategory`,
   },
 })

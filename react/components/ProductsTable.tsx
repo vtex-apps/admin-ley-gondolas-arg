@@ -6,6 +6,8 @@ import {
   ButtonWithIcon,
 } from 'vtex.styleguide'
 import Edit from '@vtex/styleguide/lib/icon/Edit'
+import Check from '@vtex/styleguide/lib/icon/Check'
+import CheckPartial from '@vtex/styleguide/lib/icon/CheckPartial'
 import useTableMeasures from '@vtex/styleguide/lib/EXPERIMENTAL_Table/hooks/useTableMeasures'
 import React, { useState, useEffect, useCallback } from 'react'
 import { useIntl } from 'react-intl'
@@ -29,23 +31,6 @@ export default function ProductsTable({
   const [createDocumentMutation] = useMutation(createDocument)
   const columns = [
     {
-      id: 'catalog',
-      title: 'See on Catalog',
-      cellRenderer: ({ data }: any) => {
-        const edit = <Edit />
-
-        return (
-          <ButtonWithIcon
-            href={`https://${workspace}--${account}.myvtex.com/admin/Site/ProdutoForm.aspx?id=${data.productId}`}
-            target="_blank"
-            // eslint-disable-next-line @typescript-eslint/no-use-before-define
-            onClick={() => handleClickSeeCatalog(data)}
-            icon={edit}
-          />
-        )
-      },
-    },
-    {
       id: 'image',
       title: intl.formatMessage(titlesIntl.productsTableImage),
       cellRenderer: ({ data }: any) => {
@@ -55,9 +40,29 @@ export default function ProductsTable({
       },
     },
     {
+      id: 'catalog',
+      title: intl.formatMessage(titlesIntl.showInCatalog),
+      cellRenderer: ({ data }: any) => {
+        const editIcon = <Edit />
+
+        return (
+          <div className="flex justify-center">
+            <ButtonWithIcon
+              href={`https://${workspace}--${account}.myvtex.com/admin/Site/ProdutoForm.aspx?id=${data.productId}`}
+              target="_blank"
+              variation="secondary"
+              // eslint-disable-next-line @typescript-eslint/no-use-before-define
+              onClick={() => handleClickSeeCatalog(data)}
+              icon={editIcon}
+            />
+          </div>
+        )
+      },
+    },
+    /* {
       id: 'productId',
       title: intl.formatMessage(titlesIntl.productsTableProductId),
-    },
+    }, */
     {
       id: 'productName',
       title: intl.formatMessage(titlesIntl.productsTableProductName),
@@ -78,12 +83,44 @@ export default function ProductsTable({
       title: intl.formatMessage(titlesIntl.productsTablePricePerUnit),
     },
     {
-      id: 'brand',
-      title: intl.formatMessage(titlesIntl.productsTableBrand),
+      id: 'bestLowerPrice',
+      title: intl.formatMessage(titlesIntl.productsTableMejorMenorPrecio),
+      cellRenderer: ({ data }: any) => {
+        const checkIcon = <Check />
+        const checkPartialIcon = <CheckPartial />
+
+        const checkData = data ? data.includes('Mejor Menor Precio') : false
+
+        return (
+          <div className="flex justify-center">
+            <div className="pa3 br2 bg-action-primary c-on-action-primary active-c-on-action-primary dib">
+              {checkData ? checkIcon : checkPartialIcon}
+            </div>
+          </div>
+        )
+      },
     },
     {
-      id: 'leyDeGondolas',
-      title: intl.formatMessage(titlesIntl.productsTableLeyDeGondalas),
+      id: 'pymes',
+      title: intl.formatMessage(titlesIntl.productsTablePyMEs),
+      cellRenderer: ({ data }: any) => {
+        const checkIcon = <Check />
+        const checkPartialIcon = <CheckPartial />
+
+        const checkData = data ? data.includes('PyMEs') : false
+
+        return (
+          <div className="flex justify-center">
+            <div className="pa3 br2 bg-action-primary c-on-action-primary active-c-on-action-primary dib">
+              {checkData ? checkIcon : checkPartialIcon}
+            </div>
+          </div>
+        )
+      },
+    },
+    {
+      id: 'brand',
+      title: intl.formatMessage(titlesIntl.productsTableBrand),
     },
   ]
 
@@ -158,7 +195,7 @@ export default function ProductsTable({
       const { subject, verb, object } = st
 
       switch (subject) {
-        case 'productId':
+        /* case 'productId':
           if (verb === 'contains') {
             newData = newData.filter((item: any) => {
               return item[subject].includes(object)
@@ -170,16 +207,20 @@ export default function ProductsTable({
           }
 
           break
-
+        */
         case 'productName':
           if (verb === 'contains') {
             newData = newData.filter((item: any) => {
-              return item[subject].includes(object)
+              return item[subject].name.includes(object)
             })
           } else if (verb === '=') {
-            newData = newData.filter((item: any) => item[subject] === object)
+            newData = newData.filter(
+              (item: any) => item[subject].name === object
+            )
           } else if (verb === '!=') {
-            newData = newData.filter((item: any) => item[subject] !== object)
+            newData = newData.filter(
+              (item: any) => item[subject].name !== object
+            )
           }
 
           break
@@ -200,17 +241,17 @@ export default function ProductsTable({
   const filterApply = intl.formatMessage(titlesIntl.filterApply)
 
   const filters = {
-    alwaysVisibleFilters: ['productId', 'productName'],
+    alwaysVisibleFilters: [/* 'productId', */ 'productName'],
     statements: filterStatements,
     onChangeStatements: handleFiltersChange,
     clearAllFiltersButtonLabel: filterClear,
     collapseLeft: true,
     submitFilterLabel: filterApply,
     options: {
-      productId: {
+      /* productId: {
         label: intl.formatMessage(titlesIntl.productsTableProductId),
         ...simpleInputVerbsAndLabel(),
-      },
+      }, */
       productName: {
         label: intl.formatMessage(titlesIntl.productsTableProductName),
         ...simpleInputVerbsAndLabel(),

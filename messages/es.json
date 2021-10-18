@@ -25,8 +25,11 @@
   "admin/admin.app.ley-gondolas-arg.productsTableProductName": "Nombre",
   "admin/admin.app.ley-gondolas-arg.productsTableBrand": "Marca",
   "admin/admin.app.ley-gondolas-arg.productsTablePricePerUnit": "Precio x Uni. de Medida",
-  "admin/admin.app.ley-gondolas-arg.productsTableLeyDeGondalas": "Ley de Gondalas",
+  "admin/admin.app.ley-gondolas-arg.productsTablePyMEs": "PyMEs",
+  "admin/admin.app.ley-gondolas-arg.productsTableMejorMenorPrecio": "Mejor Menor Precio",
   "admin/admin.app.ley-gondolas-arg.currentProduct": "Producto Actual",
   "admin/admin.app.ley-gondolas-arg.showProduct": "Mostrar Productos",
-  "admin/admin.app.ley-gondolas-arg.lastSeen": "Último visto"
+  "admin/admin.app.ley-gondolas-arg.lastSeen": "Último visto",
+  "admin/admin.app.ley-gondolas-arg.showInCatalog": "Mostrar en Catálogo",
+  "admin/admin.app.ley-gondolas-arg.warningSelectCategory": "Elija una categoría de la cual mostrar productos."
 }

@@ -105,7 +105,8 @@ declare global {
     brand: string
     categoryId: string
     pricePerUnit: number
-    leyDeGondolas: string[]
+    bestLowerPrice: string[]
+    pymes: string[]
     linkText: string
     items: Item[]
   }

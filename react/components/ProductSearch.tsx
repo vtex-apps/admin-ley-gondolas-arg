@@ -3,9 +3,9 @@
 import React, { useState, useEffect } from 'react'
 import { Modal /* , Tag */ } from 'vtex.styleguide'
 import { useQuery, useLazyQuery } from 'react-apollo'
-// import { useIntl } from 'react-intl'
+import { useIntl } from 'react-intl'
 
-// import { titlesIntl } from '../utils/intl'
+import { titlesIntl } from '../utils/intl'
 import getCategoryTree from '../graphql/getCategoryTree.gql'
 import getProductsOfCategory from '../graphql/getProductsOfCategory.gql'
 import LoadingSpinner from './LoadingSpinner'
@@ -18,7 +18,7 @@ export default function ProductSearch({
   setItems,
   closeModal,
 }: ProductSearchProps) {
-  // const intl = useIntl()
+  const intl = useIntl()
   const [categoryTree, setCategoryTree] = useState('')
   const [listOfProducts, setListOfProducts] = useState<ProductToTable[]>([])
 
@@ -31,10 +31,10 @@ export default function ProductSearch({
     ssr: false,
   })
 
+  const idCategoryOfRow = items[idRow].categorieCatalog.id
+
   const dataFromGetCategoryTree: CategoryChildenListProps[] =
     responseFromGetCategoryTree.data?.getCategoryTree?.data
-
-  const idCategoryOfRow = items[idRow].categorieCatalog.id
 
   dataFromGetCategoryTree?.forEach(
     (c: CategoryChildenListProps) => !categoryTree && findCategoryTree(c)
@@ -98,7 +98,8 @@ export default function ProductSearch({
               brand: p.brand,
               categoryId: p.categoryId,
               pricePerUnit: p.pricePerUnit && p.pricePerUnit[0],
-              leyDeGondolas: p.leyDeGondolas,
+              bestLowerPrice: p.leyDeGondolas,
+              pymes: p.leyDeGondolas,
             }
           }
         )
@@ -118,29 +119,28 @@ export default function ProductSearch({
       centered
       isOpen
       onClose={() => closeModal({ id: '', idRow: -1, name: '' })}
-      /* bottomBar={
-        <div className="nowrap">
-          {nameProduct && (
-            <span className="mr4">
-              <Tag bgColor="#F71963">{`${intl.formatMessage(
-                titlesIntl.currentProduct
-              )}: ${nameProduct}`}</Tag>
-            </span>
-          )}
-        </div>
-      } */
     >
       <div>
-        {dataProducts && listOfProducts.length > 0 && (
-          <ProductsTable
-            listOfProducts={listOfProducts}
-            setListOfProducts={setListOfProducts}
-            items={items}
-            setItems={setItems}
-          />
-        )}
+        {idCategoryOfRow !== -1 &&
+          dataProducts &&
+          listOfProducts.length > 0 && (
+            <ProductsTable
+              listOfProducts={listOfProducts}
+              setListOfProducts={setListOfProducts}
+              items={items}
+              setItems={setItems}
+            />
+          )}
+
         {loadingProducts && <LoadingSpinner />}
         {errorProducts && 'Intente despues'}
+        {idCategoryOfRow === -1 && (
+          <div className="w-100">
+            <p className="f3 fw3 gray">
+              {intl.formatMessage(titlesIntl.warningSelectCategory)}
+            </p>
+          </div>
+        )}
       </div>
     </Modal>
   )

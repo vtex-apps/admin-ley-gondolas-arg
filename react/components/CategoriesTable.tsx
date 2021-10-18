@@ -38,7 +38,9 @@ export default function CategoriesTable({
       cellRenderer: ({ data }: any) => {
         return (
           <div>
-            <div>{data.name && <Tag bgColor="#F71963">{data.name}</Tag>}</div>
+            <div className="flex justify-left">
+              {data.name && <Tag bgColor="#F71963">{data.name}</Tag>}
+            </div>
             <div className="mt1">
               <Button
                 variation="secondary"
@@ -61,7 +63,7 @@ export default function CategoriesTable({
       cellRenderer: ({ data }: any) => {
         return (
           <div>
-            <div>
+            <div className="flex justify-left">
               {data.name && (
                 <Tag bgColor="#F71963">{`${intl.formatMessage(
                   titlesIntl.lastSeen
