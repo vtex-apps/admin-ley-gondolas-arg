@@ -7,7 +7,6 @@ import {
 } from 'vtex.styleguide'
 import Edit from '@vtex/styleguide/lib/icon/Edit'
 import Check from '@vtex/styleguide/lib/icon/Check'
-import CheckPartial from '@vtex/styleguide/lib/icon/CheckPartial'
 import useTableMeasures from '@vtex/styleguide/lib/EXPERIMENTAL_Table/hooks/useTableMeasures'
 import React, { useState, useEffect, useCallback } from 'react'
 import { useIntl } from 'react-intl'
@@ -87,20 +86,24 @@ export default function ProductsTable({
       title: intl.formatMessage(titlesIntl.productsTableMejorMenorPrecio),
       cellRenderer: ({ data }: any) => {
         const checkIcon = <Check />
-        const checkPartialIcon = <CheckPartial />
 
         const checkData = data ? data.includes('Mejor Menor Precio') : false
 
         return (
           <div className="flex justify-center">
             {checkData && (
-              <div className="pa3 br2 bg-action-primary c-on-action-primary active-c-on-action-primary dib">
+              <div className="flex pa2 br2 bg-action-primary c-on-action-primary active-c-on-action-primary dib">
                 {checkIcon}
               </div>
             )}
             {!checkData && (
-              <div className="pa3 br2 c-action-primary active-c-action-primary dib mv0 ba b--action-primary">
-                {checkPartialIcon}
+              <div className="flex pa2 br2 c-action-primary active-c-action-primary dib mv0 ba b--action-primary">
+                <svg
+                  viewBox="0 0 12 12"
+                  width="16"
+                  height="16"
+                  className="vtex__icon-check"
+                />
               </div>
             )}
           </div>
@@ -112,20 +115,24 @@ export default function ProductsTable({
       title: intl.formatMessage(titlesIntl.productsTablePyMEs),
       cellRenderer: ({ data }: any) => {
         const checkIcon = <Check />
-        const checkPartialIcon = <CheckPartial />
 
         const checkData = data ? data.includes('PyMEs') : false
 
         return (
           <div className="flex justify-center">
             {checkData && (
-              <div className="pa3 br2 bg-action-primary c-on-action-primary active-c-on-action-primary dib">
+              <div className="flex pa2 br2 bg-action-primary c-on-action-primary active-c-on-action-primary dib">
                 {checkIcon}
               </div>
             )}
             {!checkData && (
-              <div className="pa3 br2 c-action-primary active-c-action-primary dib mv0 ba b--action-primary">
-                {checkPartialIcon}
+              <div className="flex pa2 br2 c-action-primary active-c-action-primary dib mv0 ba b--action-primary">
+                <svg
+                  viewBox="0 0 12 12"
+                  width="16"
+                  height="16"
+                  className="vtex__icon-check"
+                />
               </div>
             )}
           </div>

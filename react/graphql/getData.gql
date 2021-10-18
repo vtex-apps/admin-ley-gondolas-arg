@@ -3,11 +3,11 @@ query getData {
     status
     data {
       id
-      categorieLaw
       categorieCatalog
       idCategory
-      nameBestLowerProduct
+      categorieLaw
       idBestLowerProduct
+      nameBestLowerProduct
     }
   }
 }
