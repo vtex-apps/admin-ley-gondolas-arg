@@ -61,15 +61,20 @@ export default function CategoriesTable({
       cellRenderer: ({ data }: any) => {
         return (
           <div>
-            <div>{data.name && <Tag bgColor="#F71963">{data.name}</Tag>}</div>
+            <div>
+              {data.name && (
+                <Tag bgColor="#F71963">{`${intl.formatMessage(
+                  titlesIntl.lastSeen
+                )}: ${data.name}`}</Tag>
+              )}
+            </div>
             <div className="mt1">
               <Button
                 variation="secondary"
                 size="small"
                 onClick={() => handleModalProducts(data)}
               >
-                {!data.name && intl.formatMessage(titlesIntl.selectProduct)}
-                {data.name && intl.formatMessage(titlesIntl.changeProduct)}
+                {intl.formatMessage(titlesIntl.showProduct)}
               </Button>
             </div>
           </div>

@@ -14,7 +14,7 @@
   "admin/admin.app.ley-gondolas-arg.filterApply": "Aplique",
   "admin/admin.app.ley-gondolas-arg.categoriesTableCategorieLaw": "Categoria da lei",
   "admin/admin.app.ley-gondolas-arg.categoriesTableCategorieCatalog": "Categoria de catálogo",
-  "admin/admin.app.ley-gondolas-arg.categoriesTableBestLowerProduct": "Melhor Produto Inferior",
+  "admin/admin.app.ley-gondolas-arg.categoriesTableBestLowerProduct": "Produtos",
   "admin/admin.app.ley-gondolas-arg.selectCategory": "Selecione uma categoria",
   "admin/admin.app.ley-gondolas-arg.changeCategory": "Mudar uma categoria",
   "admin/admin.app.ley-gondolas-arg.currentCategory": "Categoria Atual",
@@ -27,6 +27,6 @@
   "admin/admin.app.ley-gondolas-arg.productsTablePricePerUnit": "Preço por unidade",
   "admin/admin.app.ley-gondolas-arg.productsTableLeyDeGondalas": "Ley de Gondalas",
   "admin/admin.app.ley-gondolas-arg.currentProduct": "Produto Atual",
-  "admin/admin.app.ley-gondolas-arg.selectProduct": "Selecione o produto",
-  "admin/admin.app.ley-gondolas-arg.changeProduct": "Mudar Produto"
+  "admin/admin.app.ley-gondolas-arg.showProduct": "Mostrar Produtos",
+  "admin/admin.app.ley-gondolas-arg.lastSeen": "Visto pela última vez"
 }
