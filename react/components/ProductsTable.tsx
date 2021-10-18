@@ -93,9 +93,16 @@ export default function ProductsTable({
 
         return (
           <div className="flex justify-center">
-            <div className="pa3 br2 bg-action-primary c-on-action-primary active-c-on-action-primary dib">
-              {checkData ? checkIcon : checkPartialIcon}
-            </div>
+            {checkData && (
+              <div className="pa3 br2 bg-action-primary c-on-action-primary active-c-on-action-primary dib">
+                {checkIcon}
+              </div>
+            )}
+            {!checkData && (
+              <div className="pa3 br2 c-action-primary active-c-action-primary dib mv0 ba b--action-primary">
+                {checkPartialIcon}
+              </div>
+            )}
           </div>
         )
       },
@@ -111,9 +118,16 @@ export default function ProductsTable({
 
         return (
           <div className="flex justify-center">
-            <div className="pa3 br2 bg-action-primary c-on-action-primary active-c-on-action-primary dib">
-              {checkData ? checkIcon : checkPartialIcon}
-            </div>
+            {checkData && (
+              <div className="pa3 br2 bg-action-primary c-on-action-primary active-c-on-action-primary dib">
+                {checkIcon}
+              </div>
+            )}
+            {!checkData && (
+              <div className="pa3 br2 c-action-primary active-c-action-primary dib mv0 ba b--action-primary">
+                {checkPartialIcon}
+              </div>
+            )}
           </div>
         )
       },

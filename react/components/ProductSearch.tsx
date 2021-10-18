@@ -10,6 +10,7 @@ import getCategoryTree from '../graphql/getCategoryTree.gql'
 import getProductsOfCategory from '../graphql/getProductsOfCategory.gql'
 import LoadingSpinner from './LoadingSpinner'
 import ProductsTable from './ProductsTable'
+import '../style/Modal.global.css'
 
 export default function ProductSearch({
   idRow,
