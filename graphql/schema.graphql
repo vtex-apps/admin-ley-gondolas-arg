@@ -1,0 +1,15 @@
+type Query {
+  getData: GetDataResponse @cacheControl(scope: PUBLIC, maxAge: SMALL)
+
+  getCategoryTree: GetCategoryTreeResponse
+  getProductsOfCategory(categoryTree: String): GetProductsOfCategoryTreeResponse
+}
+
+type Mutation {
+  createDocument(body: BodyCreateDocumentMasterData): CreateDocumentResponse
+
+  updateDocument(
+    documentId: String
+    body: BodyUpdateDocumentMasterData
+  ): UpdateDocumentResponse
+}

@@ -1,0 +1,14 @@
+{
+  "memory": 512,
+  "ttl": 10,
+  "timeout": 600,
+  "minReplicas": 10,
+  "maxReplicas": 40,
+  "workers": 3,
+  "routes": {
+    "config": {
+      "path": "/v0/config",
+      "public": true
+    }
+  }
+}

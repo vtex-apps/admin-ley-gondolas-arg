@@ -1,0 +1,11 @@
+input BodyUpdateDocumentMasterData {
+  categorieLaw: String
+  categorieCatalog: String
+  idCategory: Int
+  nameBestLowerProduct: String
+  idBestLowerProduct: String
+}
+
+type UpdateDocumentResponse {
+  status: Int
+}

@@ -1,0 +1,13 @@
+type DataGetDataResponse {
+  id: String
+  categorieLaw: String
+  idCategory: Int
+  categorieCatalog: String
+  idBestLowerProduct: String
+  nameBestLowerProduct: String
+}
+
+type GetDataResponse {
+  status: Int
+  data: [DataGetDataResponse]
+}

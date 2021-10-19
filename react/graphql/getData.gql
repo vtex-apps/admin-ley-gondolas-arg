@@ -1,0 +1,13 @@
+query getData {
+  getData {
+    status
+    data {
+      id
+      categorieCatalog
+      idCategory
+      categorieLaw
+      idBestLowerProduct
+      nameBestLowerProduct
+    }
+  }
+}

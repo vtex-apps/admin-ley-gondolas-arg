@@ -1,8 +1,8 @@
 {
-  "name": "admin-example",
-  "vendor": "vtex",
-  "version": "0.0.12",
-  "title": "Example Admin App",
+  "name": "admin-ley-gondolas-arg",
+  "vendor": "vtexarg",
+  "version": "0.0.5",
+  "title": "Admin Ley de Gondolas",
   "description": "",
   "mustUpdateAt": "2022-08-28",
   "scripts": {
@@ -15,7 +15,64 @@
     "react": "3.x",
     "admin": "0.x",
     "messages": "1.x",
-    "docs": "0.x"
+    "docs": "0.x",
+    "node": "6.x",
+    "graphql": "1.x"
   },
+  "billingOptions": {
+    "support": {
+      "url": "https://support.vtex.com/hc/requests"
+    },
+    "type": "free",
+    "availableCountries": ["*"]
+  },
+  "policies": [
+    {
+      "name": "outbound-access",
+      "attrs": {
+        "host": "{{account}}.myvtex.com",
+        "path": "/*"
+      }
+    },
+    {
+      "name": "outbound-access",
+      "attrs": {
+        "host": "portal.vtexcommercestable.com.br",
+        "path": "/api/*"
+      }
+    },
+    {
+      "name": "outbound-access",
+      "attrs": {
+        "host": "portal.vtexcommercebeta.com.br",
+        "path": "/api/*"
+      }
+    },
+    {
+      "name": "outbound-access",
+      "attrs": {
+        "host": "{{account}}.vtexcommercestable.com.br",
+        "path": "/api/*"
+      }
+    },
+    {
+      "name": "Get_Account_By_Identifier"
+    },
+    {
+      "name": "ADMIN_DS"
+    },
+    {
+      "name": "POWER_USER_DS"
+    },
+    {
+      "name": "AdminPortal"
+    },
+    {
+      "name": "colossus-fire-event"
+    },
+    {
+      "name": "colossus-write-logs"
+    }
+  ],
   "$schema": "https://raw.githubusercontent.com/vtex/node-vtex-api/master/gen/manifest.schema"
 }

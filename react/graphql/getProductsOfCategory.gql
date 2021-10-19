@@ -1,0 +1,23 @@
+query getProductsOfCategory($categoryTree: String) {
+  getProductsOfCategory(categoryTree: $categoryTree) {
+    status
+    data {
+      productId
+      productName
+      brand
+      categoryId
+      pricePerUnit
+      leyDeGondolas
+      linkText
+      items {
+        itemId
+        name
+        images {
+          imageId
+          imageUrl
+          imageText
+        }
+      }
+    }
+  }
+}

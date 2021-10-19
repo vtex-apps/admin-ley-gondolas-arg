@@ -1,0 +1,27 @@
+type Image {
+  imageId: String
+  imageUrl: String
+  imageText: String
+}
+
+type Item {
+  itemId: String
+  name: String
+  images: [Image]
+}
+
+type DataGetProductsOfCategoryTreeResponse {
+  productId: String
+  productName: String
+  brand: String
+  categoryId: String
+  pricePerUnit: [Int]
+  leyDeGondolas: [String]
+  linkText: String
+  items: [Item]
+}
+
+type GetProductsOfCategoryTreeResponse {
+  status: Int
+  data: [DataGetProductsOfCategoryTreeResponse]
+}

@@ -1,0 +1,10 @@
+mutation createDocument($body: BodyCreateDocumentMasterData) {
+  createDocument(body: $body) {
+    status
+    data {
+      Id
+      Href
+      DocumentId
+    }
+  }
+}
