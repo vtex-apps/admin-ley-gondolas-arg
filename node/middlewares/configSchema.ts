@@ -1,10 +1,11 @@
+import type { BodySchema } from '../interfaces'
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export async function configSchema(ctx: Context, next: () => Promise<any>) {
   const {
     clients: { masterDataClient },
   } = ctx
 
-  const bodySchema = {
+  const bodySchema: BodySchema = {
     properties: {
       categorieCatalog: {
         type: 'string',
@@ -28,7 +29,7 @@ export async function configSchema(ctx: Context, next: () => Promise<any>) {
       },
       nameBestLowerProduct: {
         type: 'string',
-        maxLength: 50,
+        maxLength: 1000,
         title: 'nameBestLowerProduct',
       },
     },
@@ -73,9 +74,18 @@ export async function configSchema(ctx: Context, next: () => Promise<any>) {
     },
   }
 
-  const data = await masterDataClient.createSchema(bodySchema)
+  try {
+    const response = await masterDataClient.createSchema(bodySchema)
 
-  ctx.body = data
+    const { data } = response
+
+    ctx.body = data
+  } catch (error) {
+    ctx.status = 500
+    ctx.body = {
+      Message: 'Hubo un error, intente nuevamente despues.',
+    }
+  }
 
   await next()
 }

@@ -1,7 +1,9 @@
 /* eslint-disable prettier/prettier */
 
-import type { InstanceOptions, IOContext } from '@vtex/api'
+import type { InstanceOptions, IOContext, IOResponse } from '@vtex/api'
 import { ExternalClient } from '@vtex/api'
+
+import type { ResponseCreateSchema, BodySchema } from '../interfaces'
 
 export default class MasterDataClient extends ExternalClient {
   constructor(context: IOContext, options?: InstanceOptions) {
@@ -40,8 +42,9 @@ export default class MasterDataClient extends ExternalClient {
     return { status: 200 }
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  public async createSchema(body: any) {
+  public async createSchema(
+    body: BodySchema
+  ): Promise<IOResponse<ResponseCreateSchema>> {
     return this.http.putRaw(`/leyGondolas/schemas/ley-gondolas`, body)
   }
 }

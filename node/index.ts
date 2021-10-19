@@ -32,7 +32,7 @@ export default new Service<Clients, RecorderState, Context>({
   },
   routes: {
     config: method({
-      POST: [configSchema],
+      GET: [configSchema],
     }),
   },
 })
