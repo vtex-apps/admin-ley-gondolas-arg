@@ -34,21 +34,15 @@ export default async function SaveInMasterdata(
   let response
 
   try {
-    console.info('idDocument', idDocument)
-    console.info('bodyMasterdata', bodyMasterdata)
     if (idDocument) {
-      console.info('updateDocumentMutation')
       response = await updateDocumentMutation({
         variables: { documentId: idDocument, body: bodyMasterdata },
       })
     } else {
-      console.info('createDocumentMutation')
       response = await createDocumentMutation({
         variables: { body: bodyMasterdata },
       })
     }
-
-    console.info('response', response)
 
     return response
   } catch (error) {

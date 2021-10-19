@@ -72,4 +72,7 @@ export const titlesIntl = defineMessages({
   warningSelectCategory: {
     id: `${prefix}warningSelectCategory`,
   },
+  tryLater: {
+    id: `${prefix}tryLater`,
+  },
 })

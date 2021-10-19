@@ -1,7 +1,7 @@
 {
   "name": "admin-ley-gondolas-arg",
   "vendor": "vtexarg",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "title": "Admin Ley de Gondolas",
   "description": "",
   "mustUpdateAt": "2022-08-28",
@@ -17,8 +17,7 @@
     "messages": "1.x",
     "docs": "0.x",
     "node": "6.x",
-    "graphql": "1.x",
-    "assets": "0.x"
+    "graphql": "1.x"
   },
   "billingOptions": {
     "support": {

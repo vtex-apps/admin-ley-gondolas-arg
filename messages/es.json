@@ -31,5 +31,6 @@
   "admin/admin.app.ley-gondolas-arg.showProduct": "Mostrar Productos",
   "admin/admin.app.ley-gondolas-arg.lastSeen": "Último visto",
   "admin/admin.app.ley-gondolas-arg.showInCatalog": "Mostrar en Catálogo",
-  "admin/admin.app.ley-gondolas-arg.warningSelectCategory": "Elija una categoría de la cual mostrar productos."
+  "admin/admin.app.ley-gondolas-arg.warningSelectCategory": "Elija una categoría de la cual mostrar productos.",
+  "admin/admin.app.ley-gondolas-arg.tryLater": "Hubo un problema, intente despues nuevamente."
 }

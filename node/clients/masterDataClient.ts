@@ -39,4 +39,9 @@ export default class MasterDataClient extends ExternalClient {
 
     return { status: 200 }
   }
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  public async createSchema(body: any) {
+    return this.http.putRaw(`/leyGondolas/schemas/ley-gondolas`, body)
+  }
 }

@@ -2,10 +2,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import type { RecorderState } from '@vtex/api'
-import { LRUCache, Service } from '@vtex/api'
+import { LRUCache, method, Service } from '@vtex/api'
 
 import { Clients } from './clients'
 import { resolvers } from './resolvers'
+import { configSchema } from './middlewares/configSchema'
 
 const TIMEOUT_MS = 800
 
@@ -28,5 +29,10 @@ export default new Service<Clients, RecorderState, Context>({
   },
   graphql: {
     resolvers,
+  },
+  routes: {
+    config: method({
+      POST: [configSchema],
+    }),
   },
 })

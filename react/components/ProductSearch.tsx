@@ -134,7 +134,13 @@ export default function ProductSearch({
           )}
 
         {loadingProducts && <LoadingSpinner />}
-        {errorProducts && 'Intente despues'}
+        {errorProducts && (
+          <div className="w-100">
+            <p className="f3 fw3 gray">
+              {intl.formatMessage(titlesIntl.tryLater)}
+            </p>
+          </div>
+        )}
         {idCategoryOfRow === -1 && (
           <div className="w-100">
             <p className="f3 fw3 gray">

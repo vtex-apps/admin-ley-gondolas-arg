@@ -24,7 +24,9 @@ export default function ProductsTable({
   setItems,
 }: ProductTableProps) {
   const intl = useIntl()
+
   const { workspace, account } = useRuntime()
+
   const [updateDocumentMutation] = useMutation(updateDocument)
 
   const [createDocumentMutation] = useMutation(createDocument)
@@ -47,7 +49,7 @@ export default function ProductsTable({
         return (
           <div className="flex justify-center">
             <ButtonWithIcon
-              href={`https://${workspace}--${account}.myvtex.com/admin/Site/ProdutoForm.aspx?id=${data.productId}`}
+              href={`/admin/Site/ProdutoForm.aspx?id=${data.productId}`}
               target="_blank"
               variation="secondary"
               // eslint-disable-next-line @typescript-eslint/no-use-before-define
@@ -58,20 +60,17 @@ export default function ProductsTable({
         )
       },
     },
-    /* {
-      id: 'productId',
-      title: intl.formatMessage(titlesIntl.productsTableProductId),
-    }, */
     {
       id: 'productName',
       title: intl.formatMessage(titlesIntl.productsTableProductName),
       cellRenderer: ({ data }: any) => {
+        const domain =
+          workspace === 'master'
+            ? `https://${account}.myvtex.com/`
+            : `https://${workspace}--${account}.myvtex.com/`
+
         return (
-          <Link
-            href={`https://${workspace}--${account}.myvtex.com/${data.link}/p`}
-            target="_blank"
-            mediumWeigth
-          >
+          <Link href={`${domain}${data.link}/p`} target="_blank" mediumWeigth>
             {data.name}
           </Link>
         )
@@ -269,10 +268,6 @@ export default function ProductsTable({
     collapseLeft: true,
     submitFilterLabel: filterApply,
     options: {
-      /* productId: {
-        label: intl.formatMessage(titlesIntl.productsTableProductId),
-        ...simpleInputVerbsAndLabel(),
-      }, */
       productName: {
         label: intl.formatMessage(titlesIntl.productsTableProductName),
         ...simpleInputVerbsAndLabel(),
