@@ -1,5 +1,5 @@
 type Query {
-  getData: GetDataResponse @cacheControl(scope: PUBLIC, maxAge: SMALL)
+  getData: GetDataResponse
 
   getCategoryTree: GetCategoryTreeResponse
   getProductsOfCategory(categoryTree: String): GetProductsOfCategoryTreeResponse
