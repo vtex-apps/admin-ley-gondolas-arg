@@ -1,6 +1,6 @@
 {
   "name": "admin-ley-gondolas-arg",
-  "version": "0.0.12",
+  "version": "0.0.6",
   "devDependencies": {
     "@types/node": "^11.12.1",
     "@types/react": "^16.8.10",
