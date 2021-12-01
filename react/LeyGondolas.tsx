@@ -9,6 +9,7 @@ import './styles.global.css'
 import CategoriesTable from './components/CategoriesTable'
 import getData from './graphql/getData.gql'
 import LoadingSpinner from './components/LoadingSpinner'
+import { PaginationProvider } from './store/context/PaginationContext'
 
 export default function LeyGondolas() {
   const intl = useIntl()
@@ -49,14 +50,16 @@ export default function LeyGondolas() {
         <PageHeader title={intl.formatMessage(titlesIntl.pageTitle)} />
       }
     >
-      <PageBlock variation="full">
-        {categoriesList.length > 0 && dataFromMasterData && (
-          <CategoriesTable categoriesList={categoriesList} />
-        )}
-        {(categoriesList.length === 0 || !dataFromMasterData) && (
-          <LoadingSpinner />
-        )}
-      </PageBlock>
+      <PaginationProvider>
+        <PageBlock variation="full">
+          {categoriesList.length > 0 && dataFromMasterData && (
+            <CategoriesTable categoriesList={categoriesList} />
+          )}
+          {(categoriesList.length === 0 || !dataFromMasterData) && (
+            <LoadingSpinner />
+          )}
+        </PageBlock>
+      </PaginationProvider>
     </Layout>
   )
 }

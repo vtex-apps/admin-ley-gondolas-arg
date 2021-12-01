@@ -125,4 +125,13 @@ declare global {
     nameBestLowerProduct: string
     idBestLowerProduct: string
   }
+
+  interface PaginationContext {
+    totalItems: number,
+    from: number
+    to: number
+    currentPage: number
+    totalPages: number
+    limit: number
+  }
 }

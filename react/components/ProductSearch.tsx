@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/prefer-optional-chain */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { Modal /* , Tag */ } from 'vtex.styleguide'
 import { useQuery, useLazyQuery } from 'react-apollo'
 import { useIntl } from 'react-intl'
@@ -8,9 +8,11 @@ import { useIntl } from 'react-intl'
 import { titlesIntl } from '../utils/intl'
 import getCategoryTree from '../graphql/getCategoryTree.gql'
 import getProductsOfCategory from '../graphql/getProductsOfCategory.gql'
+import getPaginationData from '../graphql/getPaginationData.gql'
 import LoadingSpinner from './LoadingSpinner'
 import ProductsTable from './ProductsTable'
 import '../style/Modal.global.css'
+import { PaginationContext } from '../store/context/PaginationContext'
 
 export default function ProductSearch({
   idRow,
@@ -22,11 +24,39 @@ export default function ProductSearch({
   const intl = useIntl()
   const [categoryTree, setCategoryTree] = useState('')
   const [listOfProducts, setListOfProducts] = useState<ProductToTable[]>([])
+  const { state, dispatch } = useContext(PaginationContext)
+
+  console.log("state", state)
 
   const [
     getProductsOfCategoryQuery,
     { data: dataProducts, loading: loadingProducts, error: errorProducts },
   ] = useLazyQuery(getProductsOfCategory)
+
+  const [
+    getPaginationDataQuery,
+    { data: dataPagination },
+  ] = useLazyQuery(getPaginationData)
+
+
+  useEffect(() => {
+    console.log("entro aca1...")
+    if (categoryTree) {
+      getProductsOfCategoryQuery({ variables: { categoryTree, from: state.from, to: state.to } })
+      getPaginationDataQuery({
+        variables: {
+          //TODO: ver cómo mandarle los filtros a la query
+
+          // filters: { categoryId: categoryTree },
+          page: state.currentPage,
+          pageSize: state.limit,
+        }
+      })
+    }
+
+  }, [state.to, state.from, state.limit, categoryTree, getProductsOfCategoryQuery])
+
+  console.log("dataPagination", dataPagination)
 
   const responseFromGetCategoryTree = useQuery(getCategoryTree, {
     ssr: false,
@@ -63,11 +93,19 @@ export default function ProductSearch({
     }
   }
 
+  /*   useEffect(() => {
+      if (categoryTree) {
+        getProductsOfCategoryQuery({ variables: { categoryTree } })
+      }
+    }, [categoryTree, getProductsOfCategoryQuery]) */
+
   useEffect(() => {
-    if (categoryTree) {
-      getProductsOfCategoryQuery({ variables: { categoryTree } })
+    if (dataPagination) {
+      dispatch({ type: "SET_TOTAL_ITEMS", payload: dataPagination.products.paging.total })
+      dispatch({ type: "SET_TOTAL_PAGES", payload: dataPagination.products.paging.pages })
+      dispatch({ type: "SET_CURRENT_PAGE", payload: dataPagination.products.paging.page })
     }
-  }, [categoryTree, getProductsOfCategoryQuery])
+  }, [dataPagination])
 
   useEffect(() => {
     if (errorProducts) {
@@ -76,6 +114,7 @@ export default function ProductSearch({
 
     // eslint-disable-next-line vtex/prefer-early-return
     if (dataProducts) {
+      console.log("dataProducts-----", dataProducts)
       const listOfProductsTemp: ProductToTable[] =
         dataProducts.getProductsOfCategory.data.map(
           (p: ProductFromQuery, index: number) => {
@@ -114,7 +153,7 @@ export default function ProductSearch({
       setListOfProducts(listOfProductsTemp)
     }
   }, [dataProducts, loadingProducts, errorProducts, idRow])
-
+  console.log("listOfProducts", listOfProducts)
   return (
     <Modal
       centered

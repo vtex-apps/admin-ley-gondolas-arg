@@ -1,5 +1,5 @@
-query getProductsOfCategory($categoryTree: String) {
-  getProductsOfCategory(categoryTree: $categoryTree) {
+query getProductsOfCategory($categoryTree: String, $from: Int!, $to: Int!) {
+  getProductsOfCategory(categoryTree: $categoryTree, from: $from, to: $to) {
     status
     data {
       productId

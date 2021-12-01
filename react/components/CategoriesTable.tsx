@@ -201,13 +201,12 @@ export default function CategoriesTable({
           return filterAny
         }
 
-        return `${
-          st.verb === '='
+        return `${st.verb === '='
             ? filterIs
             : st.verb === '!='
-            ? filterIsNot
-            : filterContains
-        } ${st.object}`
+              ? filterIsNot
+              : filterContains
+          } ${st.object}`
       },
       verbs: [
         {

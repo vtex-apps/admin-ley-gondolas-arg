@@ -8,7 +8,7 @@ import {
 import Edit from '@vtex/styleguide/lib/icon/Edit'
 import Check from '@vtex/styleguide/lib/icon/Check'
 import useTableMeasures from '@vtex/styleguide/lib/EXPERIMENTAL_Table/hooks/useTableMeasures'
-import React, { useState, useEffect, useCallback } from 'react'
+import React, { useState, useEffect, useCallback, useContext } from 'react'
 import { useIntl } from 'react-intl'
 import { useRuntime } from 'vtex.render-runtime'
 import { useMutation } from 'react-apollo'
@@ -17,6 +17,7 @@ import updateDocument from '../graphql/updateDocument.gql'
 import createDocument from '../graphql/createDocument.gql'
 import { titlesIntl } from '../utils/intl'
 import SaveInMasterdata from './SaveInMasterdata'
+import { PaginationContext } from '../store/context/PaginationContext'
 
 export default function ProductsTable({
   listOfProducts,
@@ -24,7 +25,7 @@ export default function ProductsTable({
   setItems,
 }: ProductTableProps) {
   const intl = useIntl()
-
+  console.log("listOfProducts", listOfProducts)
   const { workspace, account } = useRuntime()
 
   const [updateDocumentMutation] = useMutation(updateDocument)
@@ -173,9 +174,17 @@ export default function ProductsTable({
   }
 
   const [filteredItems, setFilteredItems] = useState(listOfProducts)
-  const [filterStatements, setFilterStatements] = useState([])
+  console.log("filteredItems----", filteredItems)
+  console.log("listOfProducts----", listOfProducts)
 
-  const ITEMS_PER_PAGE = 5
+  useEffect(() => {
+    setFilteredItems(listOfProducts)
+  }, [listOfProducts])
+
+  const [filterStatements, setFilterStatements] = useState([])
+  const { state: paginationState } = useContext(PaginationContext)
+
+  const ITEMS_PER_PAGE = paginationState.limit
 
   const { slicedItems, ...paginationProps } = usePagination(
     ITEMS_PER_PAGE,
@@ -196,7 +205,7 @@ export default function ProductsTable({
     textOf: intl.formatMessage(titlesIntl.textOf),
     rowsOptions: listOfRowsOptions,
     textShowRows: intl.formatMessage(titlesIntl.textShowRows),
-    totalItems: filteredItems.length,
+    totalItems: paginationState.totalItems,
   }
 
   const measures = useTableMeasures({
@@ -292,13 +301,12 @@ export default function ProductsTable({
           return filterAny
         }
 
-        return `${
-          st.verb === '='
-            ? filterIs
-            : st.verb === '!='
+        return `${st.verb === '='
+          ? filterIs
+          : st.verb === '!='
             ? filterIsNot
             : filterContains
-        } ${st.object}`
+          } ${st.object}`
       },
       verbs: [
         {
@@ -351,30 +359,38 @@ export default function ProductsTable({
   )
 }
 
+//TODO: ver dónde setear la lógica de que no te permita avanzar la página si es mayor a totalPages
+
 function usePagination(initialSize: number, itemsToPaginate: any) {
-  const [state, setState] = useState({
+  const { dispatch, state: paginationState } = useContext(PaginationContext)
+  console.log("paginationState", paginationState)
+  const state = ({
     tableSize: initialSize,
-    currentPage: 1,
-    currentItemFrom: 1,
-    currentItemTo: initialSize,
-    slicedItems: [...itemsToPaginate].slice(0, initialSize),
+    currentPage: paginationState.currentPage,
+    currentItemFrom: paginationState.from,
+    currentItemTo: paginationState.to,
+    selectedOption: paginationState.limit,
+    slicedItems: [...itemsToPaginate]/* .slice(0, initialSize), */
   })
 
-  /** resets state on items change */
-  useEffect(() => {
-    setState({
-      tableSize: initialSize,
-      currentPage: 1,
-      currentItemFrom: 1,
-      currentItemTo: initialSize,
-      slicedItems: [...itemsToPaginate].slice(0, initialSize),
-    })
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [itemsToPaginate])
+  /*  useEffect(() => {
+     setState({
+       tableSize: initialSize,
+       currentPage: 1,
+       currentItemFrom: 1,
+       currentItemTo: initialSize,
+       slicedItems: [...itemsToPaginate].slice(0, initialSize),
+     })
+   }, [itemsToPaginate])
+  */
 
   /** gets the next page */
   const onNextClick = useCallback(() => {
-    const newPage = state.currentPage + 1
+    console.log("paginationState", paginationState)
+    dispatch({ type: 'INCREASE_PAGE' })
+
+
+    /* const newPage = state.currentPage + 1
     const itemFrom = state.currentItemTo + 1
     const itemTo = state.tableSize * newPage
     const newItems = [...itemsToPaginate].slice(itemFrom - 1, itemTo)
@@ -385,13 +401,16 @@ function usePagination(initialSize: number, itemsToPaginate: any) {
       currentItemFrom: itemFrom,
       currentItemTo: itemTo,
       slicedItems: newItems,
-    })
+    }) */
   }, [state, itemsToPaginate])
 
   /** gets the previous page */
   const onPrevClick = useCallback(() => {
+
     if (state.currentPage === 0) return
-    const newPage = state.currentPage - 1
+    dispatch({ type: 'DECREASE_PAGE' })
+
+    /* const newPage = state.currentPage - 1
     const itemFrom = state.currentItemFrom - state.tableSize
     const itemTo = state.currentItemFrom - 1
     const newItems = [...itemsToPaginate].slice(itemFrom - 1, itemTo)
@@ -402,23 +421,25 @@ function usePagination(initialSize: number, itemsToPaginate: any) {
       currentItemFrom: itemFrom,
       currentItemTo: itemTo,
       slicedItems: newItems,
-    })
+    }) */
   }, [state, itemsToPaginate])
 
   /** deals rows change of Pagination component */
   const onRowsChange = useCallback(
     (_, value) => {
       const rowValue = parseInt(value, 10)
+      console.log("rowValue", rowValue)
+      dispatch({ type: 'SET_LIMIT', payload: rowValue })
 
-      setState({
-        ...state,
-        tableSize: rowValue,
-        currentItemTo: rowValue,
-        slicedItems: [...itemsToPaginate].slice(
-          state.currentItemFrom - 1,
-          rowValue
-        ),
-      })
+      /*      setState({
+             ...state,
+             tableSize: rowValue,
+             currentItemTo: rowValue,
+             slicedItems: [...itemsToPaginate] .slice(
+               state.currentItemFrom - 1,
+               rowValue
+             ),
+           }) */
     },
     [state, itemsToPaginate]
   )
