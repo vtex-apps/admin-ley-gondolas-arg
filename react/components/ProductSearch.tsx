@@ -12,7 +12,7 @@ import getPaginationData from '../graphql/getPaginationData.gql'
 import LoadingSpinner from './LoadingSpinner'
 import ProductsTable from './ProductsTable'
 import '../style/Modal.global.css'
-import { PaginationContext } from '../store/context/PaginationContext'
+import { ProductContext } from '../store/context/ProductContext'
 
 export default function ProductSearch({
   idRow,
@@ -24,9 +24,7 @@ export default function ProductSearch({
   const intl = useIntl()
   const [categoryTree, setCategoryTree] = useState('')
   const [listOfProducts, setListOfProducts] = useState<ProductToTable[]>([])
-  const { state, dispatch } = useContext(PaginationContext)
-
-  console.log("state", state)
+  const { state, dispatch } = useContext(ProductContext)
 
   const [
     getProductsOfCategoryQuery,
@@ -38,25 +36,20 @@ export default function ProductSearch({
     { data: dataPagination },
   ] = useLazyQuery(getPaginationData)
 
-
   useEffect(() => {
-    console.log("entro aca1...")
     if (categoryTree) {
-      getProductsOfCategoryQuery({ variables: { categoryTree, from: state.from, to: state.to } })
+      getProductsOfCategoryQuery({ variables: { categoryTree, from: state.from, to: state.to, params: state.params } })
       getPaginationDataQuery({
         variables: {
-          //TODO: ver cómo mandarle los filtros a la query
-
-          // filters: { categoryId: categoryTree },
+          filters: { categoryId: categoryTree },
           page: state.currentPage,
           pageSize: state.limit,
+          term: state.params,
         }
       })
     }
 
-  }, [state.to, state.from, state.limit, categoryTree, getProductsOfCategoryQuery])
-
-  console.log("dataPagination", dataPagination)
+  }, [state.to, state.from, state.limit, state.params, categoryTree, getProductsOfCategoryQuery])
 
   const responseFromGetCategoryTree = useQuery(getCategoryTree, {
     ssr: false,
@@ -114,7 +107,6 @@ export default function ProductSearch({
 
     // eslint-disable-next-line vtex/prefer-early-return
     if (dataProducts) {
-      console.log("dataProducts-----", dataProducts)
       const listOfProductsTemp: ProductToTable[] =
         dataProducts.getProductsOfCategory.data.map(
           (p: ProductFromQuery, index: number) => {
@@ -153,7 +145,6 @@ export default function ProductSearch({
       setListOfProducts(listOfProductsTemp)
     }
   }, [dataProducts, loadingProducts, errorProducts, idRow])
-  console.log("listOfProducts", listOfProducts)
   return (
     <Modal
       centered
@@ -162,8 +153,7 @@ export default function ProductSearch({
     >
       <div>
         {idCategoryOfRow !== -1 &&
-          dataProducts &&
-          listOfProducts.length > 0 && (
+          dataProducts && (
             <ProductsTable
               listOfProducts={listOfProducts}
               setListOfProducts={setListOfProducts}
@@ -171,7 +161,6 @@ export default function ProductSearch({
               setItems={setItems}
             />
           )}
-
         {loadingProducts && <LoadingSpinner />}
         {errorProducts && (
           <div className="w-100">

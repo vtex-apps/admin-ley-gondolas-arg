@@ -2,7 +2,7 @@ type Query {
   getData: GetDataResponse
 
   getCategoryTree: GetCategoryTreeResponse
-  getProductsOfCategory(categoryTree: String, from: Int, to: Int): GetProductsOfCategoryTreeResponse
+  getProductsOfCategory(categoryTree: String, from: Int, to: Int, params: String): GetProductsOfCategoryTreeResponse
 }
 
 type Mutation {

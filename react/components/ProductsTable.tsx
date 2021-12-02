@@ -17,7 +17,7 @@ import updateDocument from '../graphql/updateDocument.gql'
 import createDocument from '../graphql/createDocument.gql'
 import { titlesIntl } from '../utils/intl'
 import SaveInMasterdata from './SaveInMasterdata'
-import { PaginationContext } from '../store/context/PaginationContext'
+import { ProductContext } from '../store/context/ProductContext'
 
 export default function ProductsTable({
   listOfProducts,
@@ -25,8 +25,8 @@ export default function ProductsTable({
   setItems,
 }: ProductTableProps) {
   const intl = useIntl()
-  console.log("listOfProducts", listOfProducts)
   const { workspace, account } = useRuntime()
+  const { state, dispatch } = useContext(ProductContext)
 
   const [updateDocumentMutation] = useMutation(updateDocument)
 
@@ -174,16 +174,13 @@ export default function ProductsTable({
   }
 
   const [filteredItems, setFilteredItems] = useState(listOfProducts)
-  console.log("filteredItems----", filteredItems)
-  console.log("listOfProducts----", listOfProducts)
 
   useEffect(() => {
     setFilteredItems(listOfProducts)
   }, [listOfProducts])
 
-  const [filterStatements, setFilterStatements] = useState([])
-  const { state: paginationState } = useContext(PaginationContext)
-
+  // const [filterStatements, setFilterStatements] = useState(state.statements)
+  const { state: paginationState } = useContext(ProductContext)
   const ITEMS_PER_PAGE = paginationState.limit
 
   const { slicedItems, ...paginationProps } = usePagination(
@@ -218,38 +215,20 @@ export default function ProductsTable({
 
   function handleFiltersChange(statements = []) {
     let newData = listOfProducts.slice()
+    if (statements.length === 0) {
+      dispatch({ type: 'SET_STATEMENTS', payload: statements })
+      dispatch({ type: 'SET_PARAMS', payload: "" })
+    }
 
     statements.forEach((st: any) => {
       if (!st || !st.object) return
       const { subject, verb, object } = st
 
       switch (subject) {
-        /* case 'productId':
-          if (verb === 'contains') {
-            newData = newData.filter((item: any) => {
-              return item[subject].includes(object)
-            })
-          } else if (verb === '=') {
-            newData = newData.filter((item: any) => item[subject] === object)
-          } else if (verb === '!=') {
-            newData = newData.filter((item: any) => item[subject] !== object)
-          }
-
-          break
-        */
         case 'productName':
           if (verb === 'contains') {
-            newData = newData.filter((item: any) => {
-              return item[subject].name.includes(object)
-            })
-          } else if (verb === '=') {
-            newData = newData.filter(
-              (item: any) => item[subject].name === object
-            )
-          } else if (verb === '!=') {
-            newData = newData.filter(
-              (item: any) => item[subject].name !== object
-            )
+            dispatch({ type: 'SET_STATEMENTS', payload: statements })
+            dispatch({ type: 'SET_PARAMS', payload: object })
           }
 
           break
@@ -259,7 +238,6 @@ export default function ProductsTable({
       }
     })
     setFilteredItems(newData)
-    setFilterStatements(statements)
   }
 
   const filterClear = intl.formatMessage(titlesIntl.filterClear)
@@ -271,7 +249,7 @@ export default function ProductsTable({
 
   const filters = {
     alwaysVisibleFilters: [/* 'productId', */ 'productName'],
-    statements: filterStatements,
+    statements: state.statements,
     onChangeStatements: handleFiltersChange,
     clearAllFiltersButtonLabel: filterClear,
     collapseLeft: true,
@@ -310,22 +288,6 @@ export default function ProductsTable({
       },
       verbs: [
         {
-          label: filterIs,
-          value: '=',
-          object: {
-            renderFn: simpleInputObject,
-            extraParams: {},
-          },
-        },
-        {
-          label: filterIsNot,
-          value: '!=',
-          object: {
-            renderFn: simpleInputObject,
-            extraParams: {},
-          },
-        },
-        {
           label: filterContains,
           value: 'contains',
           object: {
@@ -344,9 +306,20 @@ export default function ProductsTable({
     comfortableLabel: 'Comfortable',
   }
 
+  const customEmptyState = {
+    label: intl.formatMessage(titlesIntl.noProducts),
+
+  }
+
   return (
     <div>
-      <Table measures={measures} columns={columns} items={slicedItems}>
+      <Table
+        measures={measures}
+        columns={columns}
+        items={slicedItems}
+        empty={slicedItems.length === 0}
+        emptyState={customEmptyState}
+      >
         <Table.Pagination {...pagination} />
         <Table.Toolbar>
           <Table.FilterBar {...filters} />
@@ -359,49 +332,21 @@ export default function ProductsTable({
   )
 }
 
-//TODO: ver dónde setear la lógica de que no te permita avanzar la página si es mayor a totalPages
 
 function usePagination(initialSize: number, itemsToPaginate: any) {
-  const { dispatch, state: paginationState } = useContext(PaginationContext)
-  console.log("paginationState", paginationState)
+  const { dispatch, state: paginationState } = useContext(ProductContext)
   const state = ({
     tableSize: initialSize,
     currentPage: paginationState.currentPage,
     currentItemFrom: paginationState.from,
     currentItemTo: paginationState.to,
     selectedOption: paginationState.limit,
-    slicedItems: [...itemsToPaginate]/* .slice(0, initialSize), */
+    slicedItems: [...itemsToPaginate]
   })
-
-  /*  useEffect(() => {
-     setState({
-       tableSize: initialSize,
-       currentPage: 1,
-       currentItemFrom: 1,
-       currentItemTo: initialSize,
-       slicedItems: [...itemsToPaginate].slice(0, initialSize),
-     })
-   }, [itemsToPaginate])
-  */
 
   /** gets the next page */
   const onNextClick = useCallback(() => {
-    console.log("paginationState", paginationState)
     dispatch({ type: 'INCREASE_PAGE' })
-
-
-    /* const newPage = state.currentPage + 1
-    const itemFrom = state.currentItemTo + 1
-    const itemTo = state.tableSize * newPage
-    const newItems = [...itemsToPaginate].slice(itemFrom - 1, itemTo)
-
-    setState({
-      ...state,
-      currentPage: newPage,
-      currentItemFrom: itemFrom,
-      currentItemTo: itemTo,
-      slicedItems: newItems,
-    }) */
   }, [state, itemsToPaginate])
 
   /** gets the previous page */
@@ -410,36 +355,14 @@ function usePagination(initialSize: number, itemsToPaginate: any) {
     if (state.currentPage === 0) return
     dispatch({ type: 'DECREASE_PAGE' })
 
-    /* const newPage = state.currentPage - 1
-    const itemFrom = state.currentItemFrom - state.tableSize
-    const itemTo = state.currentItemFrom - 1
-    const newItems = [...itemsToPaginate].slice(itemFrom - 1, itemTo)
 
-    setState({
-      ...state,
-      currentPage: newPage,
-      currentItemFrom: itemFrom,
-      currentItemTo: itemTo,
-      slicedItems: newItems,
-    }) */
   }, [state, itemsToPaginate])
 
   /** deals rows change of Pagination component */
   const onRowsChange = useCallback(
     (_, value) => {
       const rowValue = parseInt(value, 10)
-      console.log("rowValue", rowValue)
       dispatch({ type: 'SET_LIMIT', payload: rowValue })
-
-      /*      setState({
-             ...state,
-             tableSize: rowValue,
-             currentItemTo: rowValue,
-             slicedItems: [...itemsToPaginate] .slice(
-               state.currentItemFrom - 1,
-               rowValue
-             ),
-           }) */
     },
     [state, itemsToPaginate]
   )

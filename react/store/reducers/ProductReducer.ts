@@ -1,5 +1,4 @@
-export const PaginationReducer = (state: PaginationContext, action: any) => {
-  console.log("action----", action)
+export const ProductReducer = (state: ProductContext, action: any) => {
 
   switch (action.type) {
     case 'INCREASE_PAGE':
@@ -8,14 +7,12 @@ export const PaginationReducer = (state: PaginationContext, action: any) => {
         from: state.from + state.limit,
         to: state.to + state.limit,
         currentPage: state.currentPage + 1,
-        // totalPages: Math.ceil(state.totalItems / state.limit),
       }
     case 'DECREASE_PAGE':
       return {
         ...state,
         from: state.from - state.limit,
         currentPage: state.currentPage - 1,
-        // totalPages: Math.ceil(state.totalItems / state.limit),
       }
     case 'SET_LIMIT':
       return {
@@ -33,6 +30,27 @@ export const PaginationReducer = (state: PaginationContext, action: any) => {
       return {
         ...state,
         totalPages: action.payload,
+      }
+    case 'SET_PARAMS':
+      return {
+        ...state,
+        params: action.payload,
+        currentPage: 1,
+        from: 1,
+        to: state.limit
+      }
+    case 'RESET_PAGINATION':
+      return {
+        ...state,
+        params: "",
+        from: 1,
+        to: state.limit,
+        currentPage: 1,
+      }
+    case 'SET_STATEMENTS':
+      return {
+        ...state,
+        statements: action.payload,
       }
     default:
       return state;

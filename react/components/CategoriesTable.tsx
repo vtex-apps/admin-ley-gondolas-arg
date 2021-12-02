@@ -14,6 +14,7 @@ import { useIntl } from 'react-intl'
 import { titlesIntl } from '../utils/intl'
 import CategoriesTree from './CategorieTree'
 import ProductSearch from './ProductSearch'
+import { ProductProvider } from '../store/context/ProductContext'
 
 export default function CategoriesTable({
   categoriesList,
@@ -202,10 +203,10 @@ export default function CategoriesTable({
         }
 
         return `${st.verb === '='
-            ? filterIs
-            : st.verb === '!='
-              ? filterIsNot
-              : filterContains
+          ? filterIs
+          : st.verb === '!='
+            ? filterIsNot
+            : filterContains
           } ${st.object}`
       },
       verbs: [
@@ -270,15 +271,18 @@ export default function CategoriesTable({
           closeModal={handleModalCategorieCatalog}
         />
       )}
+
       {isProductModalOpen && (
-        <ProductSearch
-          idRow={rowProductClick}
-          nameProduct={nameProductClick}
-          idProduct={idProductClick}
-          items={items}
-          setItems={setItems}
-          closeModal={handleModalProducts}
-        />
+        <ProductProvider>
+          <ProductSearch
+            idRow={rowProductClick}
+            nameProduct={nameProductClick}
+            idProduct={idProductClick}
+            items={items}
+            setItems={setItems}
+            closeModal={handleModalProducts}
+          />
+        </ProductProvider>
       )}
     </div>
   )

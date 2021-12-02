@@ -75,4 +75,7 @@ export const titlesIntl = defineMessages({
   tryLater: {
     id: `${prefix}tryLater`,
   },
+  noProducts: {
+    id: `${prefix}noProducts`,
+  },
 })

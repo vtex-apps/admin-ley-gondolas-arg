@@ -32,5 +32,6 @@
   "admin/admin.app.ley-gondolas-arg.lastSeen": "Last Seen",
   "admin/admin.app.ley-gondolas-arg.showInCatalog": "Show in Catalog",
   "admin/admin.app.ley-gondolas-arg.warningSelectCategory": "Choose a category from which to display products.",
-  "admin/admin.app.ley-gondolas-arg.tryLater": "There was a problem, please try again later."
+  "admin/admin.app.ley-gondolas-arg.tryLater": "There was a problem, please try again later.",
+  "admin/admin.app.ley-gondolas-arg.noProducts": "No products found."
 }

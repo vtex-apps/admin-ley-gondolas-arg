@@ -9,9 +9,9 @@ export const queries = {
   },
   getProductsOfCategory: async (
     _: unknown,
-    { categoryTree, from, to }: any,
+    { categoryTree, from, to, params }: any,
     ctx: Context
   ): Promise<any> => {
-    return ctx.clients.catalogClient.getProductsOfCategory(categoryTree, from, to)
+    return ctx.clients.catalogClient.getProductsOfCategory(categoryTree, from, to, params)
   },
 }
