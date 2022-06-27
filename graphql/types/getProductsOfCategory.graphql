@@ -15,7 +15,7 @@ type DataGetProductsOfCategoryTreeResponse {
   productName: String
   brand: String
   categoryId: String
-  pricePerUnit: [Int]
+  pricePerUnit: [Float]
   leyDeGondolas: [String]
   linkText: String
   items: [Item]
